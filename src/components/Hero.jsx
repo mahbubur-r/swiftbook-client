@@ -19,7 +19,7 @@ const Hero = () => {
     ];
 
     return (
-        <section className="relative h-[600px] lg:h-[700px] font-display overflow-hidden group">
+        <section className="relative min-h-[600px] lg:h-[700px] font-display overflow-hidden group pb-12 lg:pb-0">
             {/* Full Background Slider */}
             <div className="absolute inset-0 z-0">
                 <Swiper
@@ -53,7 +53,7 @@ const Hero = () => {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 h-full flex flex-col justify-start">
+            <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-start">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ const Hero = () => {
                     </div>
 
                     {/* Stats */}
-                    <div className="flex items-center gap-8 border-t border-white/10 pt-5">
+                    <div className="flex items-center mt-2 gap-8 border-t border-white/10 pt-2 md:pt-3">
                         <div>
                             <p className="text-3xl font-bold text-white">100k+</p>
                             <p className="text-sm text-gray-400">Books Available</p>

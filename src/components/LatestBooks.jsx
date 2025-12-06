@@ -27,9 +27,9 @@ const LatestBooks = () => {
                                 <span className="text-xs font-semibold text-primary uppercase tracking-wider">{book.category}</span>
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mt-2 mb-1">{book.title}</h3>
                                 <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">by {book.author}</p>
-                                <button className="w-full bg-gray-900 dark:bg-gray-600 text-white py-2 rounded hover:bg-primary transition-colors duration-300">
+                                <Link to={`/books/${book.id}`} className="block w-full bg-gray-900 dark:bg-gray-600 text-white py-2 rounded hover:bg-primary transition-colors duration-300 text-center">
                                     View Details
-                                </button>
+                                </Link>
                             </div>
                         </div>
                     ))}

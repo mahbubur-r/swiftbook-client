@@ -11,8 +11,8 @@ const Home = () => {
     return (
         <div className="bg-background-light dark:bg-background-dark min-h-screen">
             <Hero />
-            <HowItWorks />
             <LatestBooks />
+            <HowItWorks />
             <PopularCategories />
             <WhyChooseUs />
             <Testimonials />
