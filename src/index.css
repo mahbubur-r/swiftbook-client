@@ -1,1 +1,15 @@
 @import "tailwindcss";
+@config "../tailwind.config.js";
+
+@theme {
+  --color-primary: #14b8a6;
+  --color-background-light: #ffffff;
+  --color-background-dark: #111827;
+  --font-display: "Roboto", sans-serif;
+  --radius-DEFAULT: 0.5rem;
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}
