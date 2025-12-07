@@ -1,58 +1,26 @@
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
+import useAxiosSecure from "../hooks/axiosSecure";
+import { useQuery } from "@tanstack/react-query";
 
 const BookDetails = () => {
     const { id } = useParams();
+    const axiosSecure = useAxiosSecure();
 
-    // Mock Data (In a real app, fetch this from an API based on ID)
-    const books = [
-        {
-            id: 1,
-            title: "The Great Gatsby",
-            author: "F. Scott Fitzgerald",
-            image: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop",
-            category: "Classic",
-            rating: 4.8,
-            pages: 180,
-            language: "English",
-            description: "The Great Gatsby is a 1925 novel by American writer F. Scott Fitzgerald. Set in the Jazz Age on Long Island, near New York City, the novel depicts first-person narrator Nick Carraway's interactions with mysterious millionaire Jay Gatsby and Gatsby's obsession to reunite with his former lover, Daisy Buchanan."
-        },
-        {
-            id: 2,
-            title: "To Kill a Mockingbird",
-            author: "Harper Lee",
-            image: "https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=800&auto=format&fit=crop",
-            category: "Fiction",
-            rating: 4.9,
-            pages: 281,
-            language: "English",
-            description: "To Kill a Mockingbird is a novel by the American author Harper Lee. It was published in 1960 and was instantly successful. In the United States, it is widely read in high schools and middle schools. To Kill a Mockingbird has become a classic of modern American literature, winning the Pulitzer Prize."
-        },
-        {
-            id: 3,
-            title: "1984",
-            author: "George Orwell",
-            image: "https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=800&auto=format&fit=crop",
-            category: "Dystopian",
-            rating: 4.7,
-            pages: 328,
-            language: "English",
-            description: "Nineteen Eighty-Four is a dystopian social science fiction novel and cautionary tale written by the English writer George Orwell. It was published on 8 June 1949 by Secker & Warburg as Orwell's ninth and final book completed in his lifetime."
-        },
-        {
-            id: 4,
-            title: "Pride and Prejudice",
-            author: "Jane Austen",
-            image: "https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=800&auto=format&fit=crop",
-            category: "Romance",
-            rating: 4.6,
-            pages: 279,
-            language: "English",
-            description: "Pride and Prejudice is an 1813 novel of manners by Jane Austen. The novel follows the character development of Elizabeth Bennet, the dynamic protagonist of the book who learns about the repercussions of hasty judgments and comes to appreciate the difference between superficial goodness and actual goodness."
-        },
-    ];
+    const { data: books, isLoading } = useQuery({
+        queryKey: ['books'],
+        queryFn: async () => await axiosSecure.get('/books').then(res => res.data)
+    });
 
-    const book = books.find(b => b.id === parseInt(id));
+    const book = books?.find(b => b._id === id);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+            </div>
+        );
+    }
 
     if (!book) {
         return (
@@ -66,8 +34,8 @@ const BookDetails = () => {
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <Link to="/" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary mb-8 transition-colors">
-                    <FaArrowLeft className="mr-2" /> Back to Home
+                <Link to="/books" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary mb-8 transition-colors">
+                    <FaArrowLeft className="mr-2" /> Back to Books
                 </Link>
 
                 <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">

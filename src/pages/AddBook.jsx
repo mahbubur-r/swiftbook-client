@@ -1,8 +1,14 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
+import useAxiosSecure from '../hooks/axiosSecure';
+import { useNavigate } from 'react-router-dom';
+// import axios from 'axios';
+
 const AddBook = () => {
     const { user } = useAuth();
+    const axiosSecure = useAxiosSecure();
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -11,6 +17,14 @@ const AddBook = () => {
     } = useForm();
     const onSubmit = (data) => {
         console.log(data, user);
+        axiosSecure.post('/books', data)
+            .then(res => {
+                console.log('After adding book', res.data);
+                navigate('/books');
+            })
+            .catch(err => {
+                console.log('Error adding book', err);
+            })
     };
     return (
         <div>
@@ -21,6 +35,9 @@ const AddBook = () => {
 
                 <label htmlFor="author">Author</label>
                 <input type="text" id="author" name="author" className="w-full p-2 border border-gray-300 rounded" {...register('author')} />
+
+                <label htmlFor="language">Language</label>
+                <input type="text" id="language" name="language" className="w-full p-2 border border-gray-300 rounded" {...register('language')} />
 
                 <label htmlFor="image">Image</label>
                 <input type="text" id="image" name="image" className="w-full p-2 border border-gray-300 rounded" {...register('image')} />
