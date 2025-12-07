@@ -3,13 +3,45 @@ import { motion } from "framer-motion";
 import logo from '../assets/logo.png';
 import useAxiosSecure from "../hooks/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from 'react-router-dom';
+
+import Swal from 'sweetalert2';
 
 const ManageBooks = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: books = [] } = useQuery({
+    const { data: books = [], refetch } = useQuery({
         queryKey: ['books'],
         queryFn: async () => await axiosSecure.get('/books').then(res => res.data)
     });
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/books/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to delete book:', error);
+                    });
+            }
+        });
+    };
 
     return (
         <div className="p-6 w-full">
@@ -60,12 +92,14 @@ const ManageBooks = () => {
                                     <td className="py-4 px-6 text-lg">{book.category}</td>
 
                                     <td className="py-4 px-6 flex justify-center gap-3">
-                                        <button className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Update
-                                        </button>
-                                        <button className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
-                                            Delete
-                                        </button>
+                                        <td className="py-4 px-6 flex justify-center gap-3">
+                                            <Link to={`/dashboard/my-books/${book._id}`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                                Update
+                                            </Link>
+                                            <button onClick={() => handleDelete(book._id)} className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
+                                                Delete
+                                            </button>
+                                        </td>
                                     </td>
                                 </motion.tr>
                             ))}

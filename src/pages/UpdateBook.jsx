@@ -6,7 +6,7 @@ import useAxiosSecure from "../hooks/axiosSecure";
 import logo from '../assets/logo.png';
 import { IoMdArrowDropdown } from "react-icons/io";
 import useAuth from '../hooks/useAuth';
-
+import Swal from 'sweetalert2';
 
 const UpdateBook = () => {
     const { user } = useAuth();
@@ -34,14 +34,30 @@ const UpdateBook = () => {
 
     // Handle form submit to update book
     const onSubmit = (data) => {
-        axiosSecure.put(`/books/${id}`, data)
-            .then(res => {
-                console.log('Book updated:', res.data);
-                navigate('/dashboard/my-books'); // redirect back to My Books
-            })
-            .catch(err => {
-                console.log('Error updating book:', err);
-            });
+        const { _id, ...updatedData } = data;
+
+        Swal.fire({
+            title: "Do you want to save the changes?",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            denyButtonText: `Don't save`
+        }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+                axiosSecure.put(`/books/${id}`, updatedData)
+                    .then(res => {
+                        console.log('Book updated:', res.data);
+                        Swal.fire("Saved!", "", "success");
+                        navigate('/dashboard/my-books'); // redirect back to My Books
+                    })
+                    .catch(err => {
+                        console.log('Error updating book:', err);
+                    });
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        });
     };
 
     if (isLoading) return <p>Loading book data...</p>;
@@ -107,7 +123,7 @@ const UpdateBook = () => {
 
                 </div>
                 <div className="flex justify-center">
-                    <button onClick={() => navigate('/dashboard/my-books')} type="submit" className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/80 w-full">
+                    <button type="submit" className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/80 w-full">
                         Update Book
                     </button>
                 </div>

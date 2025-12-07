@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import Swal from 'sweetalert2';
 
 const AddBook = () => {
     const { user } = useAuth();
@@ -25,7 +25,13 @@ const AddBook = () => {
         axiosSecure.post('/books', data)
             .then(res => {
                 console.log('After adding book', res.data);
-                toast.success('Book added successfully');
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Book added successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                });
                 navigate('/books');
             })
             .catch(err => {
