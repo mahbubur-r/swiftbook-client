@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import logo from '../assets/logo.png';
 import useAxiosSecure from "../hooks/axiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from 'react-router-dom';
 
 const MyBooks = () => {
     const axiosSecure = useAxiosSecure();
@@ -60,12 +61,9 @@ const MyBooks = () => {
                                     <td className="py-4 px-6 text-lg">{book.category}</td>
 
                                     <td className="py-4 px-6 flex justify-center gap-3">
-                                        <button className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Edit
-                                        </button>
-                                        <button className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
-                                            Delete
-                                        </button>
+                                        <Link to={`/dashboard/my-books/${book._id}`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                            Update
+                                        </Link>
                                     </td>
                                 </motion.tr>
                             ))}
