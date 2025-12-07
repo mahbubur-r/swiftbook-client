@@ -1,6 +1,7 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { FaBars, FaTimes, FaBook, FaHome, FaUser, FaSignOutAlt, FaTachometerAlt, FaPlus } from "react-icons/fa";
+import { LuNotebookPen } from "react-icons/lu";
 import Logo from "../components/Logo";
 import LogoImg from "../assets/logo.png";
 
@@ -60,13 +61,13 @@ const DashboardLayout = () => {
                         </li>
                         <li>
                             <NavLink
-                                to="/dashboard/add-book"
+                                to="/dashboard/manage-books"
                                 className={({ isActive }) =>
                                     `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
                                 }
                             >
-                                <FaPlus className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Add Book</span>
+                                <LuNotebookPen className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Manage Books</span>
                             </NavLink>
                         </li>
                         <li>
@@ -78,6 +79,17 @@ const DashboardLayout = () => {
                             >
                                 <FaBook className="text-xl" />
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Books</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard/add-book"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <FaPlus className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Add Book</span>
                             </NavLink>
                         </li>
                         <div className="border-t border-gray-700 my-4"></div>

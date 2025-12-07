@@ -86,7 +86,7 @@ const BookDetails = () => {
 
                             <div className="flex gap-4">
                                 <button className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
-                                    Borrow Now
+                                    Order Now
                                 </button>
                                 <button className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                     Add to Wishlist

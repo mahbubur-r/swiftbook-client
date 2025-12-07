@@ -8,6 +8,9 @@ import Dashboard from "../pages/Dashboard";
 import Books from "../pages/Books";
 import BookDetails from "../pages/BookDetails";
 import AddBook from "../pages/AddBook";
+import MyBooks from "../pages/MyBooks";
+import ManageBooks from "../pages/ManageBooks";
+
 const router = createBrowserRouter([
     {
         path: "/",
@@ -46,6 +49,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/add-book",
                 element: <AddBook />,
+            },
+            {
+                path: "/dashboard/manage-books",
+                element: <ManageBooks />,
+            },
+            {
+                path: "/dashboard/my-books",
+                element: <MyBooks />,
             },
         ],
     },
