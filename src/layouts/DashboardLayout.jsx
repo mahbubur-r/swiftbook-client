@@ -5,7 +5,7 @@ import { LuNotebookPen } from "react-icons/lu";
 import { TbTruckDelivery } from "react-icons/tb";
 import Logo from "../components/Logo";
 import LogoImg from "../assets/logo.png";
-
+import { FaUserShield } from "react-icons/fa6";
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -69,6 +69,17 @@ const DashboardLayout = () => {
                             >
                                 <LuNotebookPen className="text-xl" />
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Manage Books</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard/users-management"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <FaUserShield className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Users Management</span>
                             </NavLink>
                         </li>
                         <li>

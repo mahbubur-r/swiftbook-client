@@ -15,6 +15,7 @@ import Profile from "../pages/Profile";
 import ErrorPage from "../pages/ErrorPage";
 import AllOrders from "../pages/AllOrders";
 import MyOrders from "../pages/MyOrders";
+import UsersManagement from "../pages/UsersManagement";
 
 const router = createBrowserRouter([
     {
@@ -63,6 +64,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/manage-books",
                 element: <ManageBooks />,
+            },
+            {
+                path: "/dashboard/users-management",
+                element: <UsersManagement />,
             },
             {
                 path: "/dashboard/my-books",
