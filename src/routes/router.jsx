@@ -13,6 +13,8 @@ import ManageBooks from "../pages/ManageBooks";
 import UpdateBook from "../pages/UpdateBook";
 import Profile from "../pages/Profile";
 import ErrorPage from "../pages/ErrorPage";
+import AllOrders from "../pages/AllOrders";
+import MyOrders from "../pages/MyOrders";
 
 const router = createBrowserRouter([
     {
@@ -69,6 +71,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/my-books/:id",
                 element: <UpdateBook />,
+            },
+            {
+                path: "/dashboard/all-orders",
+                element: <AllOrders />,
+            },
+            {
+                path: "/dashboard/my-orders",
+                element: <MyOrders />,
             },
         ],
     },

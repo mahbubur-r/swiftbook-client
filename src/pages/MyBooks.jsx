@@ -23,7 +23,7 @@ const MyBooks = () => {
                 <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Added Books: {books.length}</h2>
             </div>
 
-            {/* PURE TAILWIND TABLE CARD */}
+            {/* BOOKS TABLE CARD */}
             <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="min-w-full text-left">

@@ -1,7 +1,8 @@
 import { Outlet, NavLink } from "react-router-dom";
 import { useState } from "react";
-import { FaBars, FaTimes, FaBook, FaHome, FaUser, FaSignOutAlt, FaTachometerAlt, FaPlus } from "react-icons/fa";
+import { FaBars, FaTimes, FaBook, FaHome, FaUser, FaSignOutAlt, FaTachometerAlt, FaPlus, FaShoppingCart } from "react-icons/fa";
 import { LuNotebookPen } from "react-icons/lu";
+import { TbTruckDelivery } from "react-icons/tb";
 import Logo from "../components/Logo";
 import LogoImg from "../assets/logo.png";
 
@@ -90,6 +91,28 @@ const DashboardLayout = () => {
                             >
                                 <FaPlus className="text-xl" />
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Add Book</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard/all-orders"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <TbTruckDelivery className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Orders</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard/my-orders"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <FaShoppingCart className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Orders</span>
                             </NavLink>
                         </li>
                         <div className="border-t border-gray-700 my-4"></div>
