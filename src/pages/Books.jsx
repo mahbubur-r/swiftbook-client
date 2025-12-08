@@ -1,4 +1,4 @@
-import useAxiosSecure from "../hooks/axiosSecure";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 
@@ -6,7 +6,7 @@ const Books = () => {
     const axiosSecure = useAxiosSecure();
     const { data: books } = useQuery({
         queryKey: ['books'],
-        queryFn: async () => await axiosSecure.get('/books').then(res => res.data)
+        queryFn: async () => await axiosSecure.get('/books').then(res => res.data),
     })
     // console.log(books);
     return (

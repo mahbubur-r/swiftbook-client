@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from "../hooks/axiosSecure";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import logo from '../assets/logo.png';
 import { IoMdArrowDropdown } from "react-icons/io";
 import useAuth from '../hooks/useAuth';

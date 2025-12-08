@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from "framer-motion";
 import logo from '../assets/logo.png';
-import useAxiosSecure from "../hooks/axiosSecure";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from 'react-router-dom';
 

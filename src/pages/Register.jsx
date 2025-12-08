@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import GoogleLogo from "../components/GoogleLogo";
 import Logo from "../components/Logo";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
     const { createUser, updateUserProfile, googleSignIn } = useContext(AuthContext);
+    const axiosPublic = useAxiosPublic();
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -41,9 +43,20 @@ const Register = () => {
                 console.log(loggedUser);
                 updateUserProfile(name, photo)
                     .then(() => {
-                        console.log('User profile updated');
-                        form.reset();
-                        navigate('/');
+                        // create user entry in the database
+                        const userInfo = {
+                            name: name,
+                            email: email
+                        }
+                        axiosPublic.post('/users', userInfo)
+                            .then(res => {
+                                if (res.data.insertedId) {
+                                    console.log('User added to the database');
+                                    form.reset();
+                                    navigate('/');
+                                }
+                            })
+
                     })
                     .catch(error => console.log(error))
             })
@@ -57,7 +70,15 @@ const Register = () => {
         googleSignIn()
             .then(result => {
                 console.log(result.user);
-                navigate('/');
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data);
+                        navigate('/');
+                    })
             })
             .catch(error => {
                 console.error(error);

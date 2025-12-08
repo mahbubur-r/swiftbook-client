@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
-import useAxiosSecure from "../hooks/axiosSecure";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 
 const BookDetails = () => {

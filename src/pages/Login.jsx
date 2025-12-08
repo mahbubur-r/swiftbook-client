@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../providers/AuthProvider";
+import useAxiosPublic from "../hooks/useAxiosPublic";
 import GoogleLogo from "../components/GoogleLogo";
 import Logo from "../components/Logo";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
     const { signIn, googleSignIn } = useContext(AuthContext);
+    const axiosPublic = useAxiosPublic();
     const [error, setError] = useState("");
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
@@ -35,7 +37,15 @@ const Login = () => {
         googleSignIn()
             .then(result => {
                 console.log(result.user);
-                navigate(from, { replace: true });
+                const userInfo = {
+                    email: result.user?.email,
+                    name: result.user?.displayName
+                }
+                axiosPublic.post('/users', userInfo)
+                    .then(res => {
+                        console.log(res.data);
+                        navigate(from, { replace: true });
+                    })
             })
             .catch(error => {
                 console.error(error);

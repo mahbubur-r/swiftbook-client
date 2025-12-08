@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import useAuth from '../hooks/useAuth';
-import useAxiosSecure from '../hooks/axiosSecure';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { IoMdArrowDropdown } from "react-icons/io";

@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from '../assets/logo.png'
 import { useQuery } from '@tanstack/react-query';
-import useAxiosSecure from '../hooks/axiosSecure';
+import useAxiosSecure from '../hooks/useAxiosSecure';
 import { motion } from "framer-motion";
 import useAuth from '../hooks/useAuth';
 // import { format } from 'date-fns';
