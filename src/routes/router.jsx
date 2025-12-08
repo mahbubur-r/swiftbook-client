@@ -12,11 +12,13 @@ import MyBooks from "../pages/MyBooks";
 import ManageBooks from "../pages/ManageBooks";
 import UpdateBook from "../pages/UpdateBook";
 import Profile from "../pages/Profile";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <MainLayout />,
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",
