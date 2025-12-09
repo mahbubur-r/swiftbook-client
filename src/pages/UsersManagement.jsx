@@ -45,6 +45,36 @@ const UsersManagement = () => {
             }
         });
     };
+
+    const handleRoleChange = (id, role) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: role === "user" ?
+                "You will remove this user's privileges" :
+                `You want to make this user a ${role}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, proceed!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.patch(`/users/role/${id}`, { role })
+                    .then(res => {
+                        if (res.data.modifiedCount > 0) {
+                            refetch(); // reload user list
+                            Swal.fire({
+                                title: "Success!",
+                                text: role === "user" ? "Role removed." : `User is now a ${role}.`,
+                                icon: "success"
+                            });
+                        }
+                    });
+            }
+        });
+    };
+
+
     return (
         <div className="flex flex-col items-center mb-8">
             <div className="flex items-center gap-4">
@@ -54,17 +84,18 @@ const UsersManagement = () => {
             <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Registered Users: {users?.length}</h2>
 
             {/* All Users Table */}
-            <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6">
+            <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6 p-4">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-left">
+                    <table className="min-w-full text-left divide-y divide-gray-200">
                         <thead className="bg-primary text-white text-lg">
                             <tr>
                                 <th className="py-4 px-6">S/N</th>
                                 <th className="py-4 px-6">User Name</th>
                                 <th className="py-4 px-6">User Email</th>
                                 <th className="py-4 px-6">Role</th>
-                                <th className="py-4 px-6">Created At</th>
-                                <th className="py-4 px-6 text-center">Make or Remove</th>
+                                {/* <th className="py-4 px-6">Created At</th> */}
+                                <th className="py-4 px-6 text-center">Role Change</th>
+                                <th className="py-4 px-6 text-center">Remove</th>
                             </tr>
                         </thead>
 
@@ -90,18 +121,41 @@ const UsersManagement = () => {
 
                                     <td className="py-4 px-6 text-lg">{user?.email}</td>
                                     <td className="py-4 px-6 text-lg">{user?.role}</td>
-                                    <td className="py-4 px-6 text-lg">{user?.createdAt && new Date(user.createdAt).toLocaleDateString()}</td>
+                                    {/* <td className="py-4 px-6 text-lg">{user?.createdAt && new Date(user.createdAt).toLocaleDateString()}</td> */}
 
                                     <td className="py-4 px-6 flex justify-center gap-3">
-                                        <Link to={`/`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Admin
-                                        </Link>
-                                        <Link to={`/`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Librarian
-                                        </Link>
-                                        {/* pending/shipped/delivered */}
-                                        <button onClick={() => handleRemoveUser(user._id)} className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Remove
+                                        {/* Make Admin */}
+                                        {user.role !== "admin" && (
+                                            <button
+                                                onClick={() => handleRoleChange(user._id, "admin")}
+                                                className="px-4 py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition">
+                                                Make Admin
+                                            </button>
+                                        )}
+                                        {/* Make Librarian */}
+                                        {user.role !== "librarian" && (
+                                            <button
+                                                onClick={() => handleRoleChange(user._id, "librarian")}
+                                                className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                                            >
+                                                Make Librarian
+                                            </button>
+                                        )}
+
+                                        {/* Remove Role */}
+                                        {user.role !== "user" && (
+                                            <button
+                                                onClick={() => handleRoleChange(user._id, "user")}
+                                                className="px-4 py-2 rounded-xl bg-yellow-600 text-white font-semibold hover:bg-blue-700 transition"
+                                            >
+                                                Remove Role
+                                            </button>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {/* Remove User*/}
+                                        <button onClick={() => handleRemoveUser(user._id)} className="px-4 mb-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-blue-700 transition">
+                                            Remove User
                                         </button>
                                     </td>
                                 </motion.tr>
