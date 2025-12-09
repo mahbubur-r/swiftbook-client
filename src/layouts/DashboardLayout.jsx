@@ -73,6 +73,17 @@ const DashboardLayout = () => {
                         </li>
                         <li>
                             <NavLink
+                                to="/dashboard/all-users"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <FaUserShield className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Users</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
                                 to="/dashboard/users-management"
                                 className={({ isActive }) =>
                                     `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`

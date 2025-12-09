@@ -14,7 +14,6 @@ const MyOrders = () => {
 
     useEffect(() => {
         if (!user?.email) return;  // prevents crash on refresh
-
         axiosSecure.get(`/orders/${user.email}`)
             .then(res => setOrders(res.data));
     }, [user]);
