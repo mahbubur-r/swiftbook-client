@@ -6,6 +6,7 @@ import { TbTruckDelivery } from "react-icons/tb";
 import Logo from "../components/Logo";
 import LogoImg from "../assets/logo.png";
 import { FaUserShield } from "react-icons/fa6";
+import { FaFileInvoiceDollar } from "react-icons/fa6";
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -135,6 +136,17 @@ const DashboardLayout = () => {
                             >
                                 <FaShoppingCart className="text-xl" />
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Orders</span>
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/dashboard/invoices"
+                                className={({ isActive }) =>
+                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                }
+                            >
+                                <FaFileInvoiceDollar className="text-xl" />
+                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Invoices</span>
                             </NavLink>
                         </li>
                         <div className="border-t border-gray-700 my-4"></div>

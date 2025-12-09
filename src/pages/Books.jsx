@@ -6,7 +6,7 @@ const Books = () => {
     const axiosSecure = useAxiosSecure();
     const { data: books } = useQuery({
         queryKey: ['books'],
-        queryFn: async () => await axiosSecure.get('/books').then(res => res.data),
+        queryFn: async () => await axiosSecure.get('/books/published').then(res => res.data),
     })
     console.log(books);
     return (

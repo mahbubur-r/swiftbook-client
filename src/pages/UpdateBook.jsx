@@ -118,7 +118,7 @@ const UpdateBook = () => {
                         <input type="text" id="librarian" name="librarian" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Name" {...register('librarian')} defaultValue={user?.displayName} readOnly />
 
                         <label htmlFor="librarianEmail">Librarian Email</label>
-                        <input type="text" id="librarianEmail" name="librarianEmail" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Email" {...register('librarianEmail')} defaultValue={user?.email} readOnly />
+                        <input type="email" id="librarianEmail" name="librarianEmail" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Email" {...register('librarianEmail')} defaultValue={user?.email} readOnly />
                     </div>
 
                 </div>

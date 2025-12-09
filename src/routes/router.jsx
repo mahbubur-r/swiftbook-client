@@ -17,6 +17,8 @@ import AllOrders from "../pages/AllOrders";
 import MyOrders from "../pages/MyOrders";
 import UsersManagement from "../pages/UsersManagement";
 import AllUsers from "../pages/AllUsers";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import Invoices from "../pages/Invoices";
 
 const router = createBrowserRouter([
     {
@@ -90,6 +92,14 @@ const router = createBrowserRouter([
                 path: "/dashboard/my-orders",
                 element: <MyOrders />,
             },
+            {
+                path: "/dashboard/payment-success",
+                element: <PaymentSuccess />,
+            },
+            {
+                path: "/dashboard/invoices",
+                element: <Invoices />,
+            }
         ],
     },
 ]);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import logo from '../assets/logo.png'
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../hooks/useAxiosSecure';
@@ -6,17 +6,74 @@ import { motion } from "framer-motion";
 import useAuth from '../hooks/useAuth';
 // import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const MyOrders = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const [orders, setOrders] = useState([]);
 
-    useEffect(() => {
-        if (!user?.email) return;  // prevents crash on refresh
-        axiosSecure.get(`/orders/${user.email}`)
-            .then(res => setOrders(res.data));
-    }, [user]);
+    const { data: orders = [], refetch } = useQuery({
+        queryKey: ['orders', user?.email],
+        enabled: !!user?.email, // Only fetch if user email exists
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/orders/${user.email}`);
+            return res.data;
+        }
+    });
+
+    const handlePayNow = async (orderId) => {
+        try {
+            const res = await axiosSecure.post('/create-checkout-session', { orderId });
+            const { url } = res.data;
+            if (url) window.location.href = url; // eslint-disable-line
+        } catch (err) {
+            console.error('Stripe checkout error', err);
+        }
+    };
+
+    // const handleCancel = async (orderId) => {
+    //     try {
+    //         const res = await axiosSecure.patch(`/orders/cancel/${orderId}`);
+    //         if (res.data.modifiedCount > 0) {
+    //             alert("Order cancelled successfully!");
+    //             refetch(); // refresh your orders table
+    //         }
+    //     } catch (error) {
+    //         console.error("Failed to cancel order:", error);
+    //         alert("Failed to cancel order. Please try again.");
+    //     }
+    // };
+
+
+
+    const handleDelete = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/orders/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to delete order:', error);
+                    });
+            }
+        });
+    };
 
 
     return (
@@ -25,7 +82,7 @@ const MyOrders = () => {
                 <img src={logo} alt="logo" className="w-20 h-20 rounded-full shadow-lg" />
                 <p className="text-5xl font-extrabold text-primary tracking-wide">My Orders</p>
             </div>
-            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Orders:</h2>
+            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Orders: {orders.length}</h2>
 
             {/* All Orders Table */}
             <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6">
@@ -39,7 +96,7 @@ const MyOrders = () => {
                                 <th className="py-4 px-6">Customer Email</th>
                                 <th className="py-4 px-6">Price</th>
                                 <th className="py-4 px-6 text-center">Payment</th>
-                                <th className="py-4 px-6 text-center">Order</th>
+                                <th className="py-4 px-6 text-center">Remove</th>
                             </tr>
                         </thead>
 
@@ -65,16 +122,40 @@ const MyOrders = () => {
 
                                     <td className="py-4 px-6 text-lg">{order?.customerName}</td>
                                     <td className="py-4 px-6 text-lg">{order?.customerEmail}</td>
-                                    <td className="py-4 px-6 text-lg">{order?.price}</td>
+                                    <td className="py-4 px-6 text-lg">{order?.price}€</td>
                                     <td className="py-4 px-6 text-center">
-                                        <Link to={`/`} className="btn btn-primary px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                        {/* {order.paymentStatus === 'pending' && order.status !== 'cancelled' && (
+                                            <button
+                                                onClick={() => handlePayNow(order._id)}
+                                                className="btn btn-primary px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                                            >
+                                                Pay Now
+                                            </button>
+                                        )} */}
+
+                                        <Link to={``} className="btn btn-primary px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
                                             {order?.paymentStatus === "pending" ? "Pay Now" : "Paid"}
                                         </Link>
                                     </td>
                                     <td className="py-4 px-6 text-cent  er">
-                                        <button className=" btn btn-error px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
-                                            {order?.status === "pending" ? "Cancel" : "Delivered"}
+                                        {/* {order.status === "pending" && (
+                                            <button
+                                                className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition"
+                                                onClick={() => handleCancel(order._id)}
+                                            >
+                                                Cancel
+                                            </button>
+                                        )} */}
+                                        <button
+                                            onClick={() => handleDelete(order._id)}
+                                            className={`px-4 py-2 rounded-xl font-semibold transition 
+    ${order?.paymentStatus === "pending" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-gray-400 text-white cursor-not-allowed"}`}
+                                            disabled={order?.paymentStatus !== "pending"} // disabled if NOT pending
+                                        >
+                                            Cancel
                                         </button>
+
+
                                     </td>
                                 </motion.tr>
                             ))}

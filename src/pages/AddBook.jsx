@@ -76,7 +76,7 @@ const AddBook = () => {
                         {errors.status && <p className="text-red-500 text-sm">Status is required</p>}
 
                         <label htmlFor="price">Price</label>
-                        <input type="text" id="price" name="price" className="w-full p-2 border border-gray-300 rounded" placeholder="Price" {...register('price', { required: true })} />
+                        <input type="number" id="price" name="price" className="w-full p-2 border border-gray-300 rounded" placeholder="Price" {...register('price', { required: true })} />
                         {errors.price && <p className="text-red-500 text-sm">Price is required</p>}
 
                         <label htmlFor="language">Language</label>
@@ -87,10 +87,10 @@ const AddBook = () => {
                         <input type="text" id="category" name="category" className="w-full p-2 border border-gray-300 rounded" placeholder="Category" {...register('category')} />
 
                         <label htmlFor="rating">Rating</label>
-                        <input type="text" id="rating" name="rating" className="w-full p-2 border border-gray-300 rounded" placeholder="Rating" {...register('rating')} />
+                        <input type="number" id="rating" name="rating" className="w-full p-2 border border-gray-300 rounded" placeholder="Rating" {...register('rating')} />
 
                         <label htmlFor="pages">Pages</label>
-                        <input type="text" id="pages" name="pages" className="w-full p-2 border border-gray-300 rounded" placeholder="Pages" {...register('pages')} />
+                        <input type="number" id="pages" name="pages" className="w-full p-2 border border-gray-300 rounded" placeholder="Pages" {...register('pages')} />
 
                         <label htmlFor="description">Description</label>
                         <textarea id="description" name="description" className="w-full p-2 border border-gray-300 rounded" placeholder="Description" {...register('description')}></textarea>
@@ -99,7 +99,7 @@ const AddBook = () => {
                         <input type="text" id="librarian" name="librarian" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Name" {...register('librarian')} defaultValue={user?.displayName} readOnly />
 
                         <label htmlFor="librarianEmail">Librarian Email</label>
-                        <input type="text" id="librarianEmail" name="librarianEmail" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Email" {...register('librarianEmail')} defaultValue={user?.email} readOnly />
+                        <input type="email" id="librarianEmail" name="librarianEmail" className="w-full p-2 border border-gray-300 rounded" placeholder="Librarian Email" {...register('librarianEmail')} defaultValue={user?.email} readOnly />
                     </div>
                 </div>
 
