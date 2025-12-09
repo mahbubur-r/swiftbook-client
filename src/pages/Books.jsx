@@ -8,7 +8,7 @@ const Books = () => {
         queryKey: ['books'],
         queryFn: async () => await axiosSecure.get('/books').then(res => res.data),
     })
-    // console.log(books);
+    console.log(books);
     return (
         <div className="">
             <h1 className=" mt-25 text-center text-primary text-2xl font-semibold">Total Books Founds: {books?.length}</h1>

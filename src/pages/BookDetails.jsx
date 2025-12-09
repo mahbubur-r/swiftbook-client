@@ -2,8 +2,13 @@ import { useParams, Link } from "react-router-dom";
 import { FaArrowLeft, FaStar } from "react-icons/fa";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
+import useAuth from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 
 const BookDetails = () => {
+    const { user } = useAuth();
+    const navigate = useNavigate();
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
 
@@ -13,6 +18,7 @@ const BookDetails = () => {
     });
 
     const book = books?.find(b => b._id === id);
+    console.log(book);
 
     if (isLoading) {
         return (
@@ -30,6 +36,26 @@ const BookDetails = () => {
             </div>
         );
     }
+
+    const handleOrderNow = () => {
+        const orderData = {
+            customerName: user.displayName,
+            customerEmail: user.email,
+            bookId: book._id,
+            bookTitle: book.title,
+            bookImage: book.image,
+            price: book.price
+        };
+
+        axiosSecure.post('/orders', orderData)
+            .then(res => {
+                if (res.data.insertedId) {
+                    Swal.fire("Success!", "Book added to your orders!", "success");
+                }
+            });
+        navigate('/dashboard/my-orders');
+    };
+
 
     return (
         <div className="min-h-screen bg-gray-50 mt-10 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8">
@@ -67,6 +93,9 @@ const BookDetails = () => {
                             <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
                                 by <span className="font-semibold text-gray-800 dark:text-gray-100">{book.author}</span>
                             </p>
+                            <p className="text-xl text-gray-600 dark:text-gray-300 mb-6">
+                                Price <span className="font-semibold text-gray-800 dark:text-gray-100">{book.price}€</span>
+                            </p>
 
                             <div className="grid grid-cols-2 gap-4 mb-8 text-sm text-gray-500 dark:text-gray-400">
                                 <div className="bg-gray-100 dark:bg-gray-700 p-3 rounded-lg text-center">
@@ -85,7 +114,7 @@ const BookDetails = () => {
                             </p>
 
                             <div className="flex gap-4">
-                                <button className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
+                                <button onClick={handleOrderNow} className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
                                     Order Now
                                 </button>
                                 <button className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition">

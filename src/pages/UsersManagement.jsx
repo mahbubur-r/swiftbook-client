@@ -4,24 +4,54 @@ import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UsersManagement = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: users = [] } = useQuery({
+    const { data: users = [], refetch } = useQuery({
         queryKey: ['users'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/users`);
             return res.data;
         }
     })
-    console.log(users);
+    // console.log(users);
+
+    const handleRemoveUser = (id) => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                axiosSecure.delete(`/users/${id}`)
+                    .then(res => {
+                        if (res.data.deletedCount > 0) {
+                            refetch();
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Failed to delete book:', error);
+                    });
+            }
+        });
+    };
     return (
         <div className="flex flex-col items-center mb-8">
             <div className="flex items-center gap-4">
                 <img src={logo} alt="logo" className="w-20 h-20 rounded-full shadow-lg" />
                 <p className="text-5xl font-extrabold text-primary tracking-wide">Users Management</p>
             </div>
-            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Added Users: {users?.length}</h2>
+            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Registered Users: {users?.length}</h2>
 
             {/* All Users Table */}
             <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6">
@@ -70,8 +100,7 @@ const UsersManagement = () => {
                                             Librarian
                                         </Link>
                                         {/* pending/shipped/delivered */}
-                                        {/* <button onClick={() => handleDelete(book._id)}  */}
-                                        <button className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">
+                                        <button onClick={() => handleRemoveUser(user._id)} className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-blue-700 transition">
                                             Remove
                                         </button>
                                     </td>
