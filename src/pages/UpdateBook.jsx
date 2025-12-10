@@ -20,7 +20,7 @@ const UpdateBook = () => {
     const { data: book, isLoading, isError } = useQuery({
         queryKey: ['book', id],
         queryFn: async () => {
-            const res = await axiosSecure.get(`/books/${id}`);
+            const res = await axiosSecure.get(`/books/published/${id}`);
             return res.data;
         }
     });
