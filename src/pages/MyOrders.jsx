@@ -21,15 +21,15 @@ const MyOrders = () => {
         }
     });
 
-    const handlePayNow = async (orderId) => {
-        try {
-            const res = await axiosSecure.post('/create-checkout-session', { orderId });
-            const { url } = res.data;
-            if (url) window.location.href = url; // eslint-disable-line
-        } catch (err) {
-            console.error('Stripe checkout error', err);
-        }
-    };
+    // const handlePayNow = async (orderId) => {
+    //     try {
+    //         const res = await axiosSecure.post('/create-checkout-session', { orderId });
+    //         const { url } = res.data;
+    //         if (url) window.location.href = url; // eslint-disable-line
+    //     } catch (err) {
+    //         console.error('Stripe checkout error', err);
+    //     }
+    // };
 
     // const handleCancel = async (orderId) => {
     //     try {
@@ -134,7 +134,7 @@ const MyOrders = () => {
                                         )} */}
 
                                         <Link to={``} className="btn btn-primary px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            {order?.paymentStatus === "pending" ? "Pay Now" : "Paid"}
+                                            {order?.paymentStatus === "unpaid" ? "Pay Now" : "Paid"}
                                         </Link>
                                     </td>
                                     <td className="py-4 px-6 text-cent  er">
@@ -149,8 +149,8 @@ const MyOrders = () => {
                                         <button
                                             onClick={() => handleDelete(order._id)}
                                             className={`px-4 py-2 rounded-xl font-semibold transition 
-    ${order?.paymentStatus === "pending" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-gray-400 text-white cursor-not-allowed"}`}
-                                            disabled={order?.paymentStatus !== "pending"} // disabled if NOT pending
+    ${order?.paymentStatus === "unpaid" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-gray-400 text-white cursor-not-allowed"}`}
+                                            disabled={order?.paymentStatus !== "unpaid"} // disabled if NOT pending
                                         >
                                             Cancel
                                         </button>

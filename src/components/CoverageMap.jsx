@@ -27,14 +27,55 @@ const CoverageMap = () => {
                 </div>
 
                 <div className="h-[400px] w-full rounded-xl overflow-hidden shadow-lg z-0 relative">
-                    <MapContainer center={position} zoom={13} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
+                    <MapContainer center={position} zoom={11} scrollWheelZoom={false} style={{ height: '100%', width: '100%' }}>
                         <TileLayer
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
+
+                        {/* Frankfurt Main Hub */}
                         <Marker position={position}>
                             <Popup>
-                                SwiftBook Frankfurt Hub <br /> We deliver here!
+                                <strong>Frankfurt Hub</strong> <br /> We deliver here!
+                            </Popup>
+                        </Marker>
+
+                        {/* Other Locations */}
+                        <Marker position={[49.9929, 8.2473]}>
+                            <Popup>
+                                <strong>Mainz</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+                        <Marker position={[49.8728, 8.6512]}>
+                            <Popup>
+                                <strong>Darmstadt</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+                        <Marker position={[50.1347, 8.9150]}>
+                            <Popup>
+                                <strong>Hanau</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+                        <Marker position={[50.1011, 8.7668]}>
+                            <Popup>
+                                <strong>Offenbach</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+
+                        {/* Additional Small Cities */}
+                        <Marker position={[50.1874, 8.7366]}>
+                            <Popup>
+                                <strong>Bad Vilbel</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+                        <Marker position={[50.0570, 8.7041]}>
+                            <Popup>
+                                <strong>Neu-Isenburg</strong> <br /> Delivery Available
+                            </Popup>
+                        </Marker>
+                        <Marker position={[50.2291, 8.6111]}>
+                            <Popup>
+                                <strong>Bad Homburg (Taunus)</strong> <br /> Delivery Available
                             </Popup>
                         </Marker>
                     </MapContainer>

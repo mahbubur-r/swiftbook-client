@@ -1,10 +1,11 @@
 import { useParams, Link } from "react-router-dom";
-import { FaArrowLeft, FaStar } from "react-icons/fa";
+import { FaArrowLeft, FaStar, FaTimes } from "react-icons/fa";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const BookDetails = () => {
     const { user } = useAuth();
@@ -12,13 +13,20 @@ const BookDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
 
+    const [showModal, setShowModal] = useState(false);
+    const [formData, setFormData] = useState({
+        phone: '',
+        address: '',
+        name: user?.displayName || '',
+        email: user?.email || ''
+    });
+
     const { data: books, isLoading } = useQuery({
         queryKey: ['books'],
         queryFn: async () => await axiosSecure.get('/books').then(res => res.data)
     });
 
     const book = books?.find(b => b._id === id);
-    console.log(book);
 
     if (isLoading) {
         return (
@@ -37,28 +45,45 @@ const BookDetails = () => {
         );
     }
 
-    const handleOrderNow = () => {
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handlePlaceOrder = (e) => {
+        e.preventDefault();
+
         const orderData = {
-            customerName: user.displayName,
-            customerEmail: user.email,
+            customerName: formData.name,
+            customerEmail: formData.email,
+            customerPhone: formData.phone,
+            customerAddress: formData.address,
             bookId: book._id,
             bookTitle: book.title,
             bookImage: book.image,
-            price: book.price
+            price: book.price,
+            // paymentStatus: 'pending', // Use 'pending' for payment status as well initially? Request said "unpaid" for payment status.
+            // // Requirement: status="pending", paymentStatus="unpaid"
+            status: 'pending',
+            paymentStatus: 'unpaid'
         };
 
         axiosSecure.post('/orders', orderData)
             .then(res => {
                 if (res.data.insertedId) {
-                    Swal.fire("Success!", "Book added to your orders!", "success");
+                    setShowModal(false);
+                    Swal.fire("Success!", "Order placed successfully!", "success");
+                    navigate('/dashboard/my-orders');
                 }
+            })
+            .catch(err => {
+                console.error("Order failed", err);
+                Swal.fire("Error", "Failed to place order", "error");
             });
-        navigate('/dashboard/my-orders');
     };
 
-
     return (
-        <div className="min-h-screen bg-gray-50 mt-10 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8">
+        <div className="min-h-screen bg-gray-50 mt-10 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8 relative">
             <div className="max-w-7xl mx-auto">
                 <Link to="/books" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-primary mb-8 transition-colors">
                     <FaArrowLeft className="mr-2" /> Back to Books
@@ -114,7 +139,7 @@ const BookDetails = () => {
                             </p>
 
                             <div className="flex gap-4">
-                                <button onClick={handleOrderNow} className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
+                                <button onClick={() => setShowModal(true)} className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
                                     Order Now
                                 </button>
                                 <button className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition">
@@ -125,6 +150,79 @@ const BookDetails = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Order Modal */}
+            {showModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
+                    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+                        <div className="flex justify-between items-center p-6 border-b border-gray-200 dark:border-gray-700">
+                            <h3 className="text-xl font-bold text-gray-900 dark:text-white">Place Order</h3>
+                            <button onClick={() => setShowModal(false)} className="text-gray-500 hover:text-red-500 transition">
+                                <FaTimes size={20} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handlePlaceOrder} className="p-6 space-y-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Phone Number</label>
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    placeholder="+1234567890"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                    required
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Shipping Address</label>
+                                <textarea
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    placeholder="Enter full address"
+                                    rows="3"
+                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                    required
+                                ></textarea>
+                            </div>
+
+                            <button
+                                type="submit"
+                                className="w-full bg-primary text-white font-bold py-3 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1 mt-4"
+                            >
+                                Place Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
