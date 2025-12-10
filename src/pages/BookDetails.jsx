@@ -23,7 +23,7 @@ const BookDetails = () => {
 
     const { data: books, isLoading } = useQuery({
         queryKey: ['books'],
-        queryFn: async () => await axiosSecure.get('/books').then(res => res.data)
+        queryFn: async () => await axiosSecure.get('/books/published').then(res => res.data)
     });
 
     const book = books?.find(b => b._id === id);

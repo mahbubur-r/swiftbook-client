@@ -46,7 +46,11 @@ const Navbar = () => {
         <>
             <NavLink to="/" className={({ isActive }) => isActive ? "text-primary font-bold" : "text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"}>Home</NavLink>
             <NavLink to="/books" className={({ isActive }) => isActive ? "text-primary font-bold" : "text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"}>Books</NavLink>
-            <NavLink to="/dashboard" className={({ isActive }) => isActive ? "text-primary font-bold" : "text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"}>Dashboard</NavLink>
+            {
+                user ? (
+                    <NavLink to="/dashboard" className={({ isActive }) => isActive ? "text-primary font-bold" : "text-gray-700 dark:text-gray-200 hover:text-primary transition-colors"}>Dashboard</NavLink>
+                ) : null
+            }
         </>
     );
 

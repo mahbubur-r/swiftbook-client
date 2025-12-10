@@ -7,9 +7,13 @@ import Logo from "../components/Logo";
 import LogoImg from "../assets/logo.png";
 import { FaUserShield } from "react-icons/fa6";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
+import useRole from "../hooks/useRole";
+import useAuth from "../hooks/useAuth";
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const { role } = useRole();
+    const { user } = useAuth();
 
     return (
         <div className="flex h-screen bg-gray-100 dark:bg-gray-900 font-display">
@@ -61,72 +65,88 @@ const DashboardLayout = () => {
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Profile</span>
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/manage-books"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <LuNotebookPen className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Manage Books</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/all-users"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaUserShield className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Users</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/users-management"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaUserShield className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Users Management</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/my-books"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaBook className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Books</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/add-book"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaPlus className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Add Book</span>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/dashboard/all-orders"
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <TbTruckDelivery className="text-xl" />
-                                <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Orders</span>
-                            </NavLink>
-                        </li>
+                        {
+                            role === 'admin' && <>
+                                {/* Manage Books */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/manage-books"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <LuNotebookPen className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Manage Books</span>
+                                    </NavLink>
+                                </li>
+                                {/* All Users */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/all-users"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaUserShield className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Users</span>
+                                    </NavLink>
+                                </li>
+                                {/* Users Management */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/users-management"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaUserShield className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Users Management</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+                        {
+                            role === 'admin' || role === 'librarian' && <>
+                                {/* My Books */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/my-books"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaBook className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Books</span>
+                                    </NavLink>
+                                </li>
+                                {/* Add Book */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/add-book"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaPlus className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>Add Book</span>
+                                    </NavLink>
+                                </li>
+                                {/* All Orders */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/all-orders"
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <TbTruckDelivery className="text-xl" />
+                                        <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>All Orders</span>
+                                    </NavLink>
+                                </li>
+                            </>
+                        }
+
+                        {/* My Orders */}
                         <li>
                             <NavLink
                                 to="/dashboard/my-orders"
@@ -138,6 +158,7 @@ const DashboardLayout = () => {
                                 <span className={`ml-3 ${!isSidebarOpen && 'hidden'}`}>My Orders</span>
                             </NavLink>
                         </li>
+                        {/* Invoices */}
                         <li>
                             <NavLink
                                 to="/dashboard/invoices"
@@ -165,8 +186,8 @@ const DashboardLayout = () => {
                     >
                         {isSidebarOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                     </button>
-                    <div className="text-primary font-medium">
-                        Welcome to Dashboard
+                    <div className="text-primary text-lg font-medium">
+                        Welcome to {role} Dashboard
                     </div>
                 </header>
 

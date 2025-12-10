@@ -20,6 +20,7 @@ const AdminRoute = ({ children }) => {
 
     if (user && role !== 'admin') {
         return <Forbidden></Forbidden>
+        // return <div className="flex justify-center items-center h-screen">Access Forbidden</div>
     }
 
     return <Navigate to="/login" state={{ from: location }} replace></Navigate>;

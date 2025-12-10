@@ -53,7 +53,8 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <DashboardLayout />,
+        element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
+        // element: <DashboardLayout></DashboardLayout>,
         children: [
             {
                 path: "/dashboard",
@@ -67,34 +68,38 @@ const router = createBrowserRouter([
                 path: "/dashboard/add-book",
                 element: <AddBook />,
             },
+
+            // admin routes
             {
                 path: "/dashboard/manage-books",
-                element: <ManageBooks />,
-            },
-            {
-                path: "/dashboard/all-users",
-                element: <AllUsers />,
-            },
-            {
-                path: "/dashboard/users-management",
-                element: <UsersManagement />,
-            },
-            {
-                path: "/dashboard/my-books",
-                element: <MyBooks />,
-            },
-            {
-                path: "/dashboard/my-books/:id",
-                element: <UpdateBook />,
+                element: <AdminRoute><ManageBooks></ManageBooks></AdminRoute>,
             },
             {
                 path: "/dashboard/manage-books/:id",
-                element: <UpdateBook />,
+                element: <AdminRoute><UpdateBook></UpdateBook></AdminRoute>,
+            },
+            {
+                path: "/dashboard/all-users",
+                element: <AdminRoute><AllUsers></AllUsers></AdminRoute>,
+            },
+            {
+                path: "/dashboard/users-management",
+                element: <AdminRoute><UsersManagement></UsersManagement></AdminRoute>,
+            },
+            // librarian routes
+            {
+                path: "/dashboard/my-books",
+                element: <LibrarianRoute><MyBooks></MyBooks></LibrarianRoute>,
+            },
+            {
+                path: "/dashboard/my-books/:id",
+                element: <LibrarianRoute><UpdateBook></UpdateBook></LibrarianRoute>,
             },
             {
                 path: "/dashboard/all-orders",
                 element: <AllOrders />,
             },
+            // users routes
             {
                 path: "/dashboard/my-orders",
                 element: <MyOrders />,
