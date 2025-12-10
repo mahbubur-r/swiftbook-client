@@ -19,6 +19,9 @@ import UsersManagement from "../pages/UsersManagement";
 import AllUsers from "../pages/AllUsers";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import Invoices from "../pages/Invoices";
+import AdminRoute from "./AdminRoute";
+import LibrarianRoute from "./LibrarianRoute";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {

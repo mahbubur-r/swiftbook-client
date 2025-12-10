@@ -11,7 +11,7 @@ const MyBooks = () => {
     const axiosSecure = useAxiosSecure();
     const { data: books = [] } = useQuery({
         queryKey: ['books'],
-        queryFn: async () => await axiosSecure.get(`/books/${user.email}`).then(res => res.data)
+        queryFn: async () => await axiosSecure.get(`/books/by-user/${user.email}`).then(res => res.data)
     });
 
     return (
