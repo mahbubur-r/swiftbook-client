@@ -92,8 +92,9 @@ const ManageBooks = () => {
                                     <td className="py-4 px-6 text-lg">{book.category}</td>
 
                                     <td className="py-4 px-6 flex justify-center gap-3">
+
                                         <td className="py-4 px-6 flex justify-center gap-3">
-                                            <Link to={`/dashboard/my-books/${book._id}`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
+                                            <Link to={`/dashboard/manage-books/${book._id}`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">
                                                 Update
                                             </Link>
                                             <button onClick={() => handleDelete(book._id)} className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition">

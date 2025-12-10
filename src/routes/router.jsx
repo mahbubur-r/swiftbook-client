@@ -85,6 +85,10 @@ const router = createBrowserRouter([
                 element: <UpdateBook />,
             },
             {
+                path: "/dashboard/manage-books/:id",
+                element: <UpdateBook />,
+            },
+            {
                 path: "/dashboard/all-orders",
                 element: <AllOrders />,
             },
