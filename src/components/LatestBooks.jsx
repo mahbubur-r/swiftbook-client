@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { BookCardSkeleton } from "./SkeletonLoader";
 
 const LatestBooks = () => {
     const axiosSecure = useAxiosSecure();
-    const { data: books } = useQuery({
+    const { data: books, isLoading } = useQuery({
         queryKey: ['books'],
         queryFn: async () => await axiosSecure.get('/books/published').then(res => res.data)
     })
@@ -19,7 +20,11 @@ const LatestBooks = () => {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {
+                    {isLoading ? (
+                        [...Array(3)].map((_, index) => (
+                            <BookCardSkeleton key={index} />
+                        ))
+                    ) : (
                         books?.slice(0, 6).map((book) => (
                             <div key={book._id} className="bg-white dark:bg-gray-700 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 h-full flex flex-col">
                                 <div className="h-64 overflow-hidden flex-shrink-0">
@@ -40,7 +45,8 @@ const LatestBooks = () => {
                                     </div>
                                 </div>
                             </div>
-                        ))}
+                        ))
+                    )}
                 </div>
 
                 <div className="text-center mt-12">

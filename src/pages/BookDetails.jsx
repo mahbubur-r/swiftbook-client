@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import useAuth from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { BookDetailsSkeleton } from "../components/SkeletonLoader";
 
 const BookDetails = () => {
     const { user } = useAuth();
@@ -79,11 +80,7 @@ const BookDetails = () => {
     };
 
     if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
-                <span className="loading loading-spinner loading-lg text-primary"></span>
-            </div>
-        );
+        return <BookDetailsSkeleton />;
     }
 
     if (!book) {
