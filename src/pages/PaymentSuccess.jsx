@@ -1,64 +1,50 @@
-import { useSearchParams, Link } from 'react-router-dom';
-import useAuth from '../hooks/useAuth';
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import useAxiosSecure from '../hooks/useAxiosSecure';
-import { useQuery } from '@tanstack/react-query';
 
 const PaymentSuccess = () => {
-    const { user } = useAuth();
+    const [searchParams] = useSearchParams();
+    const [paymentInfo, setPaymentInfo] = useState({});
+    const sessionId = searchParams.get('session_id');
     const axiosSecure = useAxiosSecure();
-    const [params] = useSearchParams();
-    const orderId = params.get('orderId');
 
-    // Poll for order status to check if webhook has fired
-    const { data: order, isLoading } = useQuery({
-        queryKey: ['order-status', orderId],
-        enabled: !!user?.email && !!orderId,
-        queryFn: async () => {
-            // Since we don't have a single order endpoint, we fetch all and find one
-            // Ideally, backend should have GET /orders/:id
-            const res = await axiosSecure.get(`/orders/${user.email}`);
-            return res.data.find(o => o._id === orderId);
-        },
-        refetchInterval: (data) => (data?.paymentStatus === 'paid' ? false : 2000), // Stop polling once paid
-    });
+    useEffect(() => {
+        if (sessionId) {
+            axiosSecure
+                .patch(`/payment-success?session_id=${sessionId}`)
+                .then(res => {
+                    if (res.data.success) {
+                        setPaymentInfo({
+                            transactionId: res.data.transactionId,
+                            bookName: res.data.paymentInfo.bookName,
+                            amount: res.data.paymentInfo.amount,
+                        });
+                    } else {
+                        setPaymentInfo({});
+                    }
+                })
+                .catch(err => {
+                    console.error('Payment success error:', err);
+                });
+        }
+    }, [sessionId, axiosSecure]);
+
+    // if (!paymentInfo.transactionId) {
+    //     return (
+    //         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+    //             <h2 className="text-3xl font-bold text-red-500">Payment Failed</h2>
+    //             <p>Please try again or contact support.</p>
+    //         </div>
+    //     );
+    // }
 
     return (
-        <div className="text-center mt-10 p-6">
-            <h1 className="text-4xl font-bold text-green-600 mb-4">Payment Successful!</h1>
-            <p className="text-lg text-gray-600 mb-6">Your transaction has been completed.</p>
-
-            <div className="card w-96 bg-base-100 shadow-xl mx-auto border border-gray-200">
-                <div className="card-body items-center text-center">
-                    <h2 className="card-title">Order Status</h2>
-                    <p className="text-sm text-gray-500">Order ID: {orderId}</p>
-
-                    {isLoading ? (
-                        <span className="loading loading-spinner loading-lg text-primary"></span>
-                    ) : (
-                        <div className="mt-4">
-                            {order?.paymentStatus === 'paid' ? (
-                                <div className="flex flex-col items-center gap-2">
-                                    <div className="badge badge-success text-white p-3">Payment Confirmed</div>
-                                    <p className="text-sm text-green-600">Invoice Generated!</p>
-                                </div>
-                            ) : (
-                                <div className="flex flex-col items-center gap-2">
-                                    <div className="badge badge-warning p-3">Processing...</div>
-                                    <p className="text-xs text-gray-400 max-w-xs">
-                                        Waiting for payment confirmation from server...
-                                        <br />
-                                        (If this takes too long, please check if your Webhook is running)
-                                    </p>
-                                </div>
-                            )}
-                        </div>
-                    )}
-
-                    <div className="card-actions mt-6">
-                        <Link to="/dashboard/my-orders" className="btn btn-outline">My Orders</Link>
-                        <Link to="/dashboard/invoices" className={`btn btn-primary ${order?.paymentStatus !== 'paid' ? 'btn-disabled' : ''}`}>View Invoice</Link>
-                    </div>
-                </div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 dark:bg-gray-900">
+            <h2 className="text-3xl font-bold text-green-500 mb-6">Payment Successful</h2>
+            <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg text-center">
+                <p className="text-lg mb-2"><strong>Transaction ID:</strong> {paymentInfo.transactionId}</p>
+                {/* <p className="text-lg mb-2"><strong>Book:</strong> {paymentInfo.bookName}</p> */}
+                <p className="text-lg mb-2"><strong>Amount:</strong> €{paymentInfo.amount}</p>
             </div>
         </div>
     );

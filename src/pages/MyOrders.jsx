@@ -1,51 +1,46 @@
-import React from 'react';
-import logo from '../assets/logo.png'
+import React, { useEffect } from 'react';
+import logo from '../assets/logo.png';
 import { useQuery } from '@tanstack/react-query';
 import useAxiosSecure from '../hooks/useAxiosSecure';
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 import useAuth from '../hooks/useAuth';
-// import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
 const MyOrders = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
+    const [searchParams] = useSearchParams();
+    const sessionId = searchParams.get("session_id");
 
+    // Fetch orders
     const { data: orders = [], refetch } = useQuery({
         queryKey: ['orders', user?.email],
-        enabled: !!user?.email, // Only fetch if user email exists
+        enabled: !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/orders/${user.email}`);
             return res.data;
         }
     });
 
-    // const handlePayNow = async (orderId) => {
-    //     try {
-    //         const res = await axiosSecure.post('/create-checkout-session', { orderId });
-    //         const { url } = res.data;
-    //         if (url) window.location.href = url; // eslint-disable-line
-    //     } catch (err) {
-    //         console.error('Stripe checkout error', err);
-    //     }
-    // };
+    // Handle Stripe payment
+    const handlePayment = async (order) => {
+        try {
+            const paymentInfo = {
+                cost: order.price,
+                bookId: order.bookId,
+                bookTitle: order.bookTitle,
+                customerEmail: order.customerEmail,
+            };
+            const res = await axiosSecure.post('/create-checkout-session', paymentInfo);
+            window.location.assign(res.data.url); // redirect to Stripe
+        } catch (err) {
+            console.error("Payment failed:", err);
+            Swal.fire("Error", "Failed to initiate payment. Please try again.", "error");
+        }
+    };
 
-    // const handleCancel = async (orderId) => {
-    //     try {
-    //         const res = await axiosSecure.patch(`/orders/cancel/${orderId}`);
-    //         if (res.data.modifiedCount > 0) {
-    //             alert("Order cancelled successfully!");
-    //             refetch(); // refresh your orders table
-    //         }
-    //     } catch (error) {
-    //         console.error("Failed to cancel order:", error);
-    //         alert("Failed to cancel order. Please try again.");
-    //     }
-    // };
-
-
-
+    // Handle order deletion
     const handleDelete = (id) => {
         Swal.fire({
             title: "Are you sure?",
@@ -61,30 +56,35 @@ const MyOrders = () => {
                     .then(res => {
                         if (res.data.deletedCount > 0) {
                             refetch();
-                            Swal.fire({
-                                title: "Deleted!",
-                                text: "Your file has been deleted.",
-                                icon: "success"
-                            });
+                            Swal.fire("Deleted!", "Your order has been deleted.", "success");
                         }
                     })
-                    .catch(error => {
-                        console.error('Failed to delete order:', error);
-                    });
+                    .catch(err => console.error("Failed to delete order:", err));
             }
         });
     };
 
+    // Auto-update orders if returning from Stripe checkout
+    useEffect(() => {
+        if (sessionId) {
+            axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
+                .then(() => refetch())
+                .catch(err => console.error("Payment update failed:", err));
+        }
+    }, [sessionId]);
 
     return (
-        < div className="flex flex-col items-center mb-8 w-full" >
+        <div className="flex flex-col items-center mb-8 w-full">
+            {/* Header */}
             <div className="flex flex-col md:flex-row items-center gap-4 text-center">
                 <img src={logo} alt="logo" className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg" />
                 <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">My Orders</p>
             </div>
-            <h2 className="text-xl md:text-3xl font-semibold text-center mt-6 text-primary">Total Orders: {orders.length}</h2>
+            <h2 className="text-xl md:text-3xl font-semibold text-center mt-6 text-primary">
+                Total Orders: {orders.length}
+            </h2>
 
-            {/* All Orders Table */}
+            {/* Orders Table */}
             <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden mt-6 w-full">
                 <div className="overflow-x-auto">
                     <table className="table-auto min-w-full w-full">
@@ -123,39 +123,29 @@ const MyOrders = () => {
                                     <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{order?.customerName}</td>
                                     <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{order?.customerEmail}</td>
                                     <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{order?.price}€</td>
+
                                     <td className="py-4 px-6 text-center">
-                                        {/* {order.paymentStatus === 'pending' && order.status !== 'cancelled' && (
+                                        {order?.paymentStatus === 'paid' ? (
+                                            <span className="text-green-400 font-semibold">Paid</span>
+                                        ) : (
                                             <button
-                                                onClick={() => handlePayNow(order._id)}
-                                                className="btn btn-primary px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+                                                onClick={() => handlePayment(order)}
+                                                className="inline-block btn btn-primary px-3 md:px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition whitespace-nowrap text-sm md:text-base"
                                             >
                                                 Pay Now
                                             </button>
-                                        )} */}
-
-                                        <Link to={``} className="inline-block btn btn-primary px-3 md:px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition whitespace-nowrap text-sm md:text-base">
-                                            {order?.paymentStatus === "unpaid" ? "Pay Now" : "Paid"}
-                                        </Link>
+                                        )}
                                     </td>
+
                                     <td className="py-4 px-6 text-center">
-                                        {/* {order.status === "pending" && (
-                                            <button
-                                                className="px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition"
-                                                onClick={() => handleCancel(order._id)}
-                                            >
-                                                Cancel
-                                            </button>
-                                        )} */}
                                         <button
                                             onClick={() => handleDelete(order._id)}
                                             className={`px-3 md:px-4 py-2 rounded-xl font-semibold transition whitespace-nowrap text-sm md:text-base
-    ${order?.paymentStatus === "unpaid" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-gray-400 text-white cursor-not-allowed"}`}
-                                            disabled={order?.paymentStatus !== "unpaid"} // disabled if NOT pending
+                        ${order?.paymentStatus === "unpaid" ? "bg-red-600 hover:bg-red-700 text-white" : "bg-gray-400 text-white cursor-not-allowed"}`}
+                                            disabled={order?.paymentStatus !== "unpaid"} // disable if paid
                                         >
                                             Cancel
                                         </button>
-
-
                                     </td>
                                 </motion.tr>
                             ))}
@@ -163,8 +153,8 @@ const MyOrders = () => {
                     </table>
                 </div>
             </div>
-        </div >
-    )
+        </div>
+    );
 };
 
 export default MyOrders;

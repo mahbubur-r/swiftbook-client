@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import useAuth from "../hooks/useAuth";
+import logo from "../assets/logo.png";
 
 const Invoices = () => {
     const { user } = useAuth();
@@ -18,7 +19,14 @@ const Invoices = () => {
 
     return (
         <div className="w-full">
-            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-primary text-center md:text-left">Invoices</h1>
+            {/* Header */}
+            <div className="flex flex-col md:flex-row items-center gap-4 text-center">
+                <img src={logo} alt="logo" className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg" />
+                <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">Invoices</p>
+            </div>
+            <h2 className="text-xl md:text-3xl font-semibold text-center mt-6 text-primary">
+                Total Invoices: {invoices.length}
+            </h2>
 
             {invoices.length === 0 ? (
                 <p className="text-lg text-gray-600 dark:text-gray-300">No payments found yet.</p>

@@ -23,6 +23,8 @@ import MyWishlist from "../pages/MyWishlist";
 import AdminRoute from "./AdminRoute";
 import LibrarianRoute from "./LibrarianRoute";
 import PrivateRoute from "./PrivateRoute";
+import PaymentHistory from "../pages/PaymentHistory";
+import PaymentCancelled from "../pages/PaymentCancelled";
 
 const router = createBrowserRouter([
     {
@@ -108,6 +110,14 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/payment-success",
                 element: <PaymentSuccess />,
+            },
+            {
+                path: "/dashboard/payment-cancelled",
+                element: <PaymentCancelled />,
+            },
+            {
+                path: "/dashboard/payment-history",
+                element: <PaymentHistory />,
             },
             {
                 path: "/dashboard/invoices",
