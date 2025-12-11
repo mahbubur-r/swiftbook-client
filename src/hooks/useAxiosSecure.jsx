@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../firebase/firebase.config';
 
 const axiosSecure = axios.create({
-    baseURL: 'http://localhost:3000'
-    // baseURL: 'https://swiftbook-server.vercel.app'
+    // baseURL: 'http://localhost:3000'
+    baseURL: 'https://swiftbook-server.vercel.app'
 });
 
 const useAxiosSecure = () => {
