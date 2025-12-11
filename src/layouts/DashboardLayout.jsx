@@ -86,20 +86,6 @@ const DashboardLayout = () => {
                                 <span className="ml-3">Profile</span>
                             </NavLink>
                         </li>
-                        {/* My Wishlist */}
-                        <li>
-                            <NavLink
-                                to="/dashboard/my-wishlist"
-                                onClick={() => setIsSidebarOpen(false)}
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaBook className="text-xl" />
-                                <span className="ml-3">My Wishlist</span>
-                            </NavLink>
-                        </li>
-
                         {
                             role === 'admin' && <>
                                 {/* Manage Books */}
@@ -186,33 +172,51 @@ const DashboardLayout = () => {
                                 </li>
                             </>
                         }
+                        {
+                            (role === 'user' && <>
+                                {/* My Wishlist */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/my-wishlist"
+                                        onClick={() => setIsSidebarOpen(false)}
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaBook className="text-xl" />
+                                        <span className="ml-3">My Wishlist</span>
+                                    </NavLink>
+                                </li>
 
-                        {/* My Orders */}
-                        <li>
-                            <NavLink
-                                to="/dashboard/my-orders"
-                                onClick={() => setIsSidebarOpen(false)}
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaShoppingCart className="text-xl" />
-                                <span className="ml-3">My Orders</span>
-                            </NavLink>
-                        </li>
-                        {/* Invoices */}
-                        <li>
-                            <NavLink
-                                to="/dashboard/invoices"
-                                onClick={() => setIsSidebarOpen(false)}
-                                className={({ isActive }) =>
-                                    `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                }
-                            >
-                                <FaFileInvoiceDollar className="text-xl" />
-                                <span className="ml-3">Invoices</span>
-                            </NavLink>
-                        </li>
+                                {/* My Orders */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/my-orders"
+                                        onClick={() => setIsSidebarOpen(false)}
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaShoppingCart className="text-xl" />
+                                        <span className="ml-3">My Orders</span>
+                                    </NavLink>
+                                </li>
+                                {/* Invoices */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/invoices"
+                                        onClick={() => setIsSidebarOpen(false)}
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <FaFileInvoiceDollar className="text-xl" />
+                                        <span className="ml-3">Invoices</span>
+                                    </NavLink>
+                                </li>
+
+                            </>)
+                        }
 
                         <div className="border-t border-gray-700 my-4"></div>
 
