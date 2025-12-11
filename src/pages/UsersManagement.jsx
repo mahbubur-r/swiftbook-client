@@ -76,20 +76,20 @@ const UsersManagement = () => {
 
 
     return (
-        <div className="flex flex-col items-center mb-8">
-            <div className="flex items-center gap-4">
-                <img src={logo} alt="logo" className="w-20 h-20 rounded-full shadow-lg" />
-                <p className="text-5xl font-extrabold text-primary tracking-wide">Users Management</p>
+        <div className="flex flex-col items-center mb-8 w-full">
+            <div className="flex flex-col md:flex-row items-center gap-4 text-center">
+                <img src={logo} alt="logo" className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg" />
+                <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">Users Management</p>
             </div>
-            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Registered Users: {users?.length}</h2>
+            <h2 className="text-xl md:text-3xl font-semibold text-center mt-6 text-primary">Total Registered Users: {users?.length}</h2>
 
             {/* All Users Table */}
-            <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6 p-4">
+            <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden mt-6 p-4 w-full">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-left divide-y divide-gray-200">
+                    <table className="min-w-full text-left divide-y divide-gray-200 dark:divide-gray-700">
                         <thead className="bg-primary text-white text-lg">
                             <tr>
-                                <th className="py-4 px-6">S/N</th>
+                                <th className="py-4 px-6 text-center">S/N</th>
                                 <th className="py-4 px-6">User Name</th>
                                 <th className="py-4 px-6">User Email</th>
                                 <th className="py-4 px-6">Role</th>
@@ -99,68 +99,72 @@ const UsersManagement = () => {
                             </tr>
                         </thead>
 
-                        {
-                            users?.map((user, index) => (
-                                <motion.tr
-                                    key={user._id || index}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="hover:bg-gray-50 transition"
-                                >
-                                    <td className="py-4 px-6 font-medium">{index + 1}</td>
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                            {
+                                users?.map((user, index) => (
+                                    <motion.tr
+                                        key={user._id || index}
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ duration: 0.2 }}
+                                        className="hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+                                    >
+                                        <td className="py-4 px-6 font-medium text-center text-gray-900 dark:text-gray-100">{index + 1}</td>
 
-                                    <td className="py-4 px-6">
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-14 h-14 rounded-xl overflow-hidden shadow-md">
-                                                <img src={user?.photoURL} alt={user?.displayName} className="w-full h-full object-cover" />
+                                        <td className="py-4 px-6">
+                                            <div className="flex items-center gap-4 min-w-[200px]">
+                                                <div className="w-14 h-14 rounded-xl overflow-hidden shadow-md flex-shrink-0">
+                                                    <img src={user?.photoURL} alt={user?.displayName} className="w-full h-full object-cover" />
+                                                </div>
+                                                <p className="font-semibold text-lg whitespace-nowrap text-gray-900 dark:text-gray-100">{user?.name}</p>
                                             </div>
-                                            <p className="font-semibold text-lg">{user?.name}</p>
-                                        </div>
-                                    </td>
+                                        </td>
 
-                                    <td className="py-4 px-6 text-lg">{user?.email}</td>
-                                    <td className="py-4 px-6 text-lg">{user?.role}</td>
-                                    {/* <td className="py-4 px-6 text-lg">{user?.createdAt && new Date(user.createdAt).toLocaleDateString()}</td> */}
+                                        <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{user?.email}</td>
+                                        <td className="py-4 px-6 text-lg capitalize text-gray-700 dark:text-gray-300">{user?.role}</td>
+                                        {/* <td className="py-4 px-6 text-lg">{user?.createdAt && new Date(user.createdAt).toLocaleDateString()}</td> */}
 
-                                    <td className="py-4 px-6 flex justify-center gap-3">
-                                        {/* Make Admin */}
-                                        {user.role !== "admin" && (
-                                            <button
-                                                onClick={() => handleRoleChange(user._id, "admin")}
-                                                className="px-4 py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition">
-                                                Make Admin
-                                            </button>
-                                        )}
-                                        {/* Make Librarian */}
-                                        {user.role !== "librarian" && (
-                                            <button
-                                                onClick={() => handleRoleChange(user._id, "librarian")}
-                                                className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
-                                            >
-                                                Make Librarian
-                                            </button>
-                                        )}
+                                        <td className="py-4 px-6">
+                                            <div className="flex justify-center gap-3 flex-wrap min-w-[300px]">
+                                                {/* Make Admin */}
+                                                {user.role !== "admin" && (
+                                                    <button
+                                                        onClick={() => handleRoleChange(user._id, "admin")}
+                                                        className="px-3 md:px-4 py-2 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition whitespace-nowrap text-sm md:text-base">
+                                                        Make Admin
+                                                    </button>
+                                                )}
+                                                {/* Make Librarian */}
+                                                {user.role !== "librarian" && (
+                                                    <button
+                                                        onClick={() => handleRoleChange(user._id, "librarian")}
+                                                        className="px-3 md:px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition whitespace-nowrap text-sm md:text-base"
+                                                    >
+                                                        Make Librarian
+                                                    </button>
+                                                )}
 
-                                        {/* Remove Role */}
-                                        {user.role !== "user" && (
-                                            <button
-                                                onClick={() => handleRoleChange(user._id, "user")}
-                                                className="px-4 py-2 rounded-xl bg-yellow-600 text-white font-semibold hover:bg-blue-700 transition"
-                                            >
-                                                Remove Role
+                                                {/* Remove Role */}
+                                                {user.role !== "user" && (
+                                                    <button
+                                                        onClick={() => handleRoleChange(user._id, "user")}
+                                                        className="px-3 md:px-4 py-2 rounded-xl bg-yellow-600 text-white font-semibold hover:bg-blue-700 transition whitespace-nowrap text-sm md:text-base"
+                                                    >
+                                                        Remove Role
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="py-4 px-6 text-center">
+                                            {/* Remove User*/}
+                                            <button onClick={() => handleRemoveUser(user._id)} className="px-3 md:px-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition whitespace-nowrap text-sm md:text-base">
+                                                Remove User
                                             </button>
-                                        )}
-                                    </td>
-                                    <td>
-                                        {/* Remove User*/}
-                                        <button onClick={() => handleRemoveUser(user._id)} className="px-4 mb-4 py-2 rounded-xl bg-red-600 text-white font-semibold hover:bg-blue-700 transition">
-                                            Remove User
-                                        </button>
-                                    </td>
-                                </motion.tr>
-                            ))
-                        }
+                                        </td>
+                                    </motion.tr>
+                                ))
+                            }
+                        </tbody>
                     </table>
                 </div>
             </div>

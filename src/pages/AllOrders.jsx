@@ -15,17 +15,17 @@ const AllOrders = () => {
         queryFn: async () => await axiosSecure.get('/orders').then(res => res.data)
     });
     return (
-        < div className="flex flex-col items-center mb-8" >
-            <div className="flex items-center gap-4">
-                <img src={logo} alt="logo" className="w-20 h-20 rounded-full shadow-lg" />
-                <p className="text-5xl font-extrabold text-primary tracking-wide">All Orders</p>
+        < div className="flex flex-col items-center mb-8 w-full" >
+            <div className="flex flex-col md:flex-row items-center gap-4 text-center">
+                <img src={logo} alt="logo" className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg" />
+                <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">All Orders</p>
             </div>
-            <h2 className="text-3xl font-semibold text-center mt-6 text-primary">Total Orders:</h2>
+            <h2 className="text-xl md:text-3xl font-semibold text-center mt-6 text-primary">Total Orders:</h2>
 
             {/* All Orders Table */}
-            <div className="bg-white shadow-2xl rounded-2xl border border-gray-200 overflow-hidden mt-6">
+            <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden mt-6 w-full">
                 <div className="overflow-x-auto">
-                    <table className="min-w-full text-left">
+                    <table className="min-w-full text-left w-full">
                         <thead className="bg-primary text-white text-lg">
                             <tr>
                                 <th className="py-4 px-6">S/N</th>
@@ -37,29 +37,29 @@ const AllOrders = () => {
                             </tr>
                         </thead>
 
-                        <tbody className="divide-y">
+                        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                             {/* {orders.map((order, index) => ( */}
                             <motion.tr
                                 // key={order._id || index}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.2 }}
-                                className="hover:bg-gray-50 transition"
+                                className="hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                             >
-                                <td className="py-4 px-6 font-medium">1</td>
+                                <td className="py-4 px-6 font-medium text-gray-900 dark:text-gray-100">1</td>
 
                                 <td className="py-4 px-6">
                                     <div className="flex items-center gap-4">
                                         <div className="w-14 h-14 rounded-xl overflow-hidden shadow-md">
                                             <img src={user?.photoURL} alt={user?.displayName} className="w-full h-full object-cover" />
                                         </div>
-                                        <p className="font-semibold text-lg">{user?.displayName}</p>
+                                        <p className="font-semibold text-lg text-gray-900 dark:text-gray-100">{user?.displayName}</p>
                                     </div>
                                 </td>
 
-                                <td className="py-4 px-6 text-lg">{user?.displayName}</td>
-                                <td className="py-4 px-6 text-lg">{user?.email}</td>
-                                <td className="py-4 px-6 text-lg">{new Date().toLocaleString()}</td>
+                                <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{user?.displayName}</td>
+                                <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{user?.email}</td>
+                                <td className="py-4 px-6 text-lg text-gray-700 dark:text-gray-300">{new Date().toLocaleString()}</td>
 
                                 <td className="py-4 px-6 flex justify-center gap-3">
                                     <Link to={`/`} className="px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition">

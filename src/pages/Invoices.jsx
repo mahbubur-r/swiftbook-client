@@ -17,36 +17,38 @@ const Invoices = () => {
     }, [user]);
 
     return (
-        <div className="p-6">
-            <h1 className="text-4xl font-bold mb-6 text-primary">Invoices</h1>
+        <div className="w-full">
+            <h1 className="text-3xl md:text-4xl font-bold mb-6 text-primary text-center md:text-left">Invoices</h1>
 
             {invoices.length === 0 ? (
-                <p className="text-lg">No payments found yet.</p>
+                <p className="text-lg text-gray-600 dark:text-gray-300">No payments found yet.</p>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="table-auto w-full border border-gray-300 rounded-lg">
-                        <thead className="bg-primary text-white text-lg">
-                            <tr>
-                                <th className="py-3 px-4">Payment ID</th>
-                                <th className="py-3 px-4">Book</th>
-                                <th className="py-3 px-4">Amount</th>
-                                <th className="py-3 px-4">Date</th>
-                            </tr>
-                        </thead>
-
-                        <tbody className="divide-y">
-                            {invoices.map((inv, index) => (
-                                <tr key={inv._id || index} className="hover:bg-gray-100">
-                                    <td className="py-3 px-4 text-center">{inv.paymentIntentId}</td>
-                                    <td className="py-3 px-4 text-center">{inv.bookTitle}</td>
-                                    <td className="py-3 px-4 text-center">${inv.price}</td>
-                                    <td className="py-3 px-4 text-center">
-                                        {new Date(inv.paidAt).toLocaleString()}
-                                    </td>
+                <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden w-full">
+                    <div className="overflow-x-auto">
+                        <table className="table-auto w-full">
+                            <thead className="bg-primary text-white text-lg">
+                                <tr>
+                                    <th className="py-3 px-4">Payment ID</th>
+                                    <th className="py-3 px-4">Book</th>
+                                    <th className="py-3 px-4">Amount</th>
+                                    <th className="py-3 px-4">Date</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+
+                            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                                {invoices.map((inv, index) => (
+                                    <tr key={inv._id || index} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                                        <td className="py-3 px-4 text-center text-gray-800 dark:text-gray-300">{inv.paymentIntentId}</td>
+                                        <td className="py-3 px-4 text-center text-gray-800 dark:text-gray-300">{inv.bookTitle}</td>
+                                        <td className="py-3 px-4 text-center text-gray-800 dark:text-gray-300">${inv.price}</td>
+                                        <td className="py-3 px-4 text-center text-gray-800 dark:text-gray-300">
+                                            {new Date(inv.paidAt).toLocaleString()}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>

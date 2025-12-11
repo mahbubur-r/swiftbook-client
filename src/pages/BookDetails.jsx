@@ -82,6 +82,49 @@ const BookDetails = () => {
             });
     };
 
+    const handleAddToWishlist = () => {
+        if (!user) {
+            Swal.fire({
+                title: "Login Required",
+                text: "Please login to add books to your wishlist.",
+                icon: "warning"
+            });
+            // optional: navigate('/login');
+            return;
+        }
+
+        const wishlistData = {
+            bookId: book._id,
+            title: book.title,
+            image: book.image,
+            author: book.author,
+            category: book.category,
+            userEmail: user.email,
+            addedAt: new Date()
+        };
+
+        axiosSecure.post('/wishlist', wishlistData)
+            .then(res => {
+                if (res.data.insertedId) {
+                    Swal.fire({
+                        title: "Added!",
+                        text: `${book.title} has been added to your wishlist.`,
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(err => {
+                console.error("Failed to add to wishlist", err);
+                Swal.fire({
+                    title: "Error",
+                    text: "Could not add to wishlist. It might already be there!",
+                    icon: "error"
+                });
+            });
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 mt-10 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8 relative">
             <div className="max-w-7xl mx-auto">
@@ -142,7 +185,7 @@ const BookDetails = () => {
                                 <button onClick={() => setShowModal(true)} className="flex-1 bg-primary text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1">
                                     Order Now
                                 </button>
-                                <button className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                <button onClick={handleAddToWishlist} className="flex-1 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 font-bold py-3 px-6 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition">
                                     Add to Wishlist
                                 </button>
                             </div>

@@ -19,6 +19,7 @@ import UsersManagement from "../pages/UsersManagement";
 import AllUsers from "../pages/AllUsers";
 import PaymentSuccess from "../pages/PaymentSuccess";
 import Invoices from "../pages/Invoices";
+import MyWishlist from "../pages/MyWishlist";
 import AdminRoute from "./AdminRoute";
 import LibrarianRoute from "./LibrarianRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
             {
                 path: "/dashboard/invoices",
                 element: <Invoices />,
+            },
+            {
+                path: "/dashboard/my-wishlist",
+                element: <MyWishlist />,
             }
         ],
     },

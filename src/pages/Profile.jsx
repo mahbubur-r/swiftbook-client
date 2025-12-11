@@ -37,16 +37,16 @@ const Profile = () => {
     };
 
     return (
-        <div className="flex flex-col items-center mt-8 px-4 font-display">
+        <div className="flex flex-col items-center mt-8 px-4 font-display w-full">
             {/* HEADER */}
             <div className="flex flex-col items-center mb-12 animate-in fade-in slide-in-from-top-4 duration-500">
                 <div className="flex items-center gap-4">
                     <img src={logo} alt="logo" className="w-16 h-16 rounded-full shadow-lg" />
-                    <p className="text-4xl font-extrabold text-primary tracking-wide">My Profile</p>
+                    <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">My Profile</p>
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl p-8 w-full max-w-lg transition-all duration-300 hover:shadow-3xl border border-gray-100 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 shadow-2xl rounded-3xl p-4 md:p-8 w-full max-w-lg transition-all duration-300 hover:shadow-3xl border border-gray-100 dark:border-gray-700">
 
                 <div className="flex flex-col items-center gap-6">
                     <div className="relative group">
