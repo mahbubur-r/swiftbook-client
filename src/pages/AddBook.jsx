@@ -21,8 +21,14 @@ const AddBook = () => {
     } = useForm();
 
     const onSubmit = (data) => {
-        console.log(data, user);
-        axiosSecure.post('/books', data)
+        // Ensure email is attached correctly, sending both common field names to be safe if backend schema is ambiguous
+        const bookData = {
+            ...data,
+            librarianEmail: user?.email,
+            email: user?.email
+        };
+        console.log("Submitting book:", bookData);
+        axiosSecure.post('/books', bookData)
             .then(res => {
                 console.log('After adding book', res.data);
                 Swal.fire({
@@ -88,10 +94,10 @@ const AddBook = () => {
                             <input type="text" id="category" name="category" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Category" {...register('category')} />
 
                             <label htmlFor="rating" className="font-semibold text-gray-700 dark:text-gray-300">Rating</label>
-                            <input type="number" id="rating" name="rating" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Rating" {...register('rating')} />
+                            <input type="text" id="rating" name="rating" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Rating" {...register('rating')} />
 
                             <label htmlFor="pages" className="font-semibold text-gray-700 dark:text-gray-300">Pages</label>
-                            <input type="number" id="pages" name="pages" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Pages" {...register('pages')} />
+                            <input type="text" id="pages" name="pages" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Pages" {...register('pages')} />
 
                             <label htmlFor="description" className="font-semibold text-gray-700 dark:text-gray-300">Description</label>
                             <textarea id="description" name="description" className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded dark:bg-gray-700 dark:text-white" placeholder="Description" {...register('description')}></textarea>

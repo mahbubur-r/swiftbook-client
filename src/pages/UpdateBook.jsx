@@ -14,6 +14,18 @@ const UpdateBook = () => {
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
+    // Get user role
+    const { data: roleData } = useQuery({
+        queryKey: ["role", user?.email],
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/${user.email}/role`);
+            return res.data;
+        }
+    });
+
+    const role = roleData?.role;
+
+
     const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
     // Fetch book data using TanStack Query
@@ -49,7 +61,16 @@ const UpdateBook = () => {
                     .then(res => {
                         console.log('Book updated:', res.data);
                         Swal.fire("Saved!", "", "success");
-                        navigate('/dashboard/my-books'); // redirect back to My Books
+
+                        // 👉 Redirect based on role
+                        if (role === "admin") {
+                            navigate('/dashboard/manage-books');
+                        } else if (role === "librarian") {
+                            navigate('/dashboard/my-books');
+                        }
+
+                        // navigate('/dashboard/my-books'); 
+                        // redirect back to My Books
                     })
                     .catch(err => {
                         console.log('Error updating book:', err);

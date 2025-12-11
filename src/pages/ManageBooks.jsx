@@ -64,6 +64,7 @@ const ManageBooks = () => {
                                 <th className="py-4 px-6">Book</th>
                                 <th className="py-4 px-6">Author</th>
                                 <th className="py-4 px-6">Category</th>
+                                <th className="py-4 px-6">Status</th>
                                 <th className="py-4 px-6 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -90,6 +91,7 @@ const ManageBooks = () => {
 
                                     <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.author}</td>
                                     <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.category}</td>
+                                    <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.status}</td>
 
                                     <td className="py-4 px-6">
                                         <div className="flex justify-center gap-3">

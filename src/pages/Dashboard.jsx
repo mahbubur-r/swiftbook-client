@@ -1,11 +1,34 @@
-import logo from "../assets/logo.png";
+import React from 'react';
+import useRole from "../hooks/useRole";
+import AdminDashboard from "./dashboard/AdminDashboard";
+import LibrarianDashboard from "./dashboard/LibrarianDashboard";
+import UserDashboard from "./dashboard/UserDashboard";
+import Loading from "./Loading";
+
 const Dashboard = () => {
+    const { role, roleLoading } = useRole();
+
+    if (roleLoading) {
+        return <Loading />;
+    }
+
     return (
-        <div className="flex flex-col items-center mb-8 w-full">
-            <div className="flex flex-col md:flex-row items-center gap-4 text-center">
-                <img src={logo} alt="logo" className="w-16 h-16 md:w-20 md:h-20 rounded-full shadow-lg" />
-                <p className="text-3xl md:text-5xl font-extrabold text-primary tracking-wide">Dashboard</p>
+        <div className="w-full">
+            {/* Debug Info - Remove after fixing */}
+            <div className="text-xs text-gray-500 text-center mb-4">
+                Debug: Role detected as "{role}"
             </div>
+
+            {role === 'admin' && <AdminDashboard />}
+            {role === 'librarian' && <LibrarianDashboard />}
+            {role === 'user' && <UserDashboard />}
+
+            {!['admin', 'librarian', 'user'].includes(role) && (
+                <div className="text-center p-8 bg-yellow-50 text-yellow-800 rounded-lg">
+                    <p className="font-bold">No dashboard found for role: {String(role)}</p>
+                    <p>Please contact support or try logging out and back in.</p>
+                </div>
+            )}
         </div>
     );
 };

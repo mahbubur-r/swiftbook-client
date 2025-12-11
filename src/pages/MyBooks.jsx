@@ -11,8 +11,13 @@ const MyBooks = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const { data: books = [], isLoading } = useQuery({
-        queryKey: ['books'],
-        queryFn: async () => await axiosSecure.get(`/books/by-user/${user.email}`).then(res => res.data)
+        queryKey: ['my-books', user?.email],
+        queryFn: async () => {
+            // Fetch all books and filter client-side since /books/by-user endpoint doesn't exist
+            const res = await axiosSecure.get('/books');
+            const allBooks = res.data;
+            return allBooks.filter(book => book.librarianEmail === user?.email || book.email === user?.email);
+        }
     });
 
     return (
@@ -36,6 +41,7 @@ const MyBooks = () => {
                                 <th className="py-4 px-6">Book</th>
                                 <th className="py-4 px-6">Author</th>
                                 <th className="py-4 px-6">Category</th>
+                                <th className="py-4 px-6">Status</th>
                                 <th className="py-4 px-6 text-center">Actions</th>
                             </tr>
                         </thead>
@@ -65,6 +71,7 @@ const MyBooks = () => {
 
                                         <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.author}</td>
                                         <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.category}</td>
+                                        <td className="py-4 px-6 text-lg whitespace-nowrap text-gray-700 dark:text-gray-300">{book.status}</td>
 
                                         <td className="py-4 px-6 text-center">
                                             <Link to={`/dashboard/my-books/${book._id}`} className="inline-block px-3 md:px-4 py-2 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition whitespace-nowrap text-sm md:text-base">
