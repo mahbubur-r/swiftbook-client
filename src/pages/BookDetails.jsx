@@ -21,12 +21,62 @@ const BookDetails = () => {
         email: user?.email || ''
     });
 
+    const [rating, setRating] = useState(0);
+    const [reviewText, setReviewText] = useState("");
+
     const { data: books, isLoading } = useQuery({
         queryKey: ['books'],
         queryFn: async () => await axiosSecure.get('/books/published').then(res => res.data)
     });
 
     const book = books?.find(b => b._id === id);
+
+    // Fetch orders to check if user has purchased this book
+    const { data: orders = [] } = useQuery({
+        queryKey: ['orders', user?.email],
+        enabled: !!user?.email,
+        queryFn: async () => await axiosSecure.get(`/orders/${user.email}`).then(res => res.data)
+    });
+
+    const hasOrdered = orders.some(order => order.bookId === id);
+
+    // Fetch reviews for this book
+    /* 
+       Note: The reviews query depends on 'id'. 
+       Since 'id' comes from useParams() at the top level, it is always available.
+       We can safely call this hook here.
+    */
+    const { data: reviews = [], refetch: refetchReviews } = useQuery({
+        queryKey: ['reviews', id],
+        queryFn: async () => await axiosSecure.get(`/reviews/${id}`).then(res => res.data)
+    });
+
+    const handleAddReview = (e) => {
+        e.preventDefault();
+        const reviewData = {
+            bookId: id,
+            userEmail: user.email,
+            userName: user.displayName,
+            userPhoto: user.photoURL,
+            rating,
+            comment: reviewText,
+            date: new Date()
+        };
+
+        axiosSecure.post('/reviews', reviewData)
+            .then(res => {
+                if (res.data.insertedId) {
+                    Swal.fire("Success", "Review added successfully!", "success");
+                    setRating(0);
+                    setReviewText("");
+                    refetchReviews();
+                }
+            })
+            .catch(err => {
+                console.error("Failed to add review", err);
+                Swal.fire("Error", "Failed to add review", "error");
+            });
+    };
 
     if (isLoading) {
         return (
@@ -125,6 +175,8 @@ const BookDetails = () => {
             });
     };
 
+
+
     return (
         <div className="min-h-screen bg-gray-50 mt-10 dark:bg-gray-900 font-display py-12 px-4 sm:px-6 lg:px-8 relative">
             <div className="max-w-7xl mx-auto">
@@ -132,7 +184,7 @@ const BookDetails = () => {
                     <FaArrowLeft className="mr-2" /> Back to Books
                 </Link>
 
-                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden">
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden mb-12">
                     <div className="md:flex">
                         {/* Image Section */}
                         <div className="md:w-1/3 h-96 md:h-auto relative">
@@ -191,6 +243,90 @@ const BookDetails = () => {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/* REVIEWS SECTION */}
+                <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-12">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 border-b border-gray-200 dark:border-gray-700 pb-4">
+                        Reviews & Ratings ({reviews.length})
+                    </h3>
+
+                    {/* Review List */}
+                    <div className="space-y-8 mb-12">
+                        {reviews.length === 0 ? (
+                            <p className="text-gray-500 dark:text-gray-400 italic">No reviews yet. Be the first to review!</p>
+                        ) : (
+                            reviews.map((review, idx) => (
+                                <div key={idx} className="flex gap-4 border-b border-gray-100 dark:border-gray-700 pb-6 last:border-0">
+                                    <img src={review.userPhoto || "https://i.ibb.co/5GzXkwq/user.png"} alt="User" className="w-12 h-12 rounded-full object-cover" />
+                                    <div>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h4 className="font-bold text-gray-900 dark:text-white">{review.userName}</h4>
+                                            <span className="text-xs text-gray-500 dark:text-gray-400">• {new Date(review.date).toLocaleDateString()}</span>
+                                        </div>
+                                        <div className="flex text-yellow-400 mb-2 text-sm">
+                                            {[...Array(5)].map((_, i) => (
+                                                <FaStar key={i} className={i < review.rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-600"} />
+                                            ))}
+                                        </div>
+                                        <p className="text-gray-600 dark:text-gray-300">{review.comment}</p>
+                                    </div>
+                                </div>
+                            ))
+                        )}
+                    </div>
+
+                    {/* Add Review Form */}
+                    {user && hasOrdered ? (
+                        <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-6 md:p-8">
+                            <h4 className="text-xl font-bold text-gray-900 dark:text-white mb-6">Leave a Review</h4>
+                            <form onSubmit={handleAddReview}>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Rating</label>
+                                    <div className="flex gap-2">
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <button
+                                                key={star}
+                                                type="button"
+                                                onClick={() => setRating(star)}
+                                                className={`text-2xl focus:outline-none transition-colors ${star <= rating ? "text-yellow-400" : "text-gray-300 dark:text-gray-500 hover:text-yellow-200"}`}
+                                            >
+                                                <FaStar />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="mb-6">
+                                    <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2">Comment</label>
+                                    <textarea
+                                        className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition"
+                                        rows="4"
+                                        placeholder="Share your thoughts about this book..."
+                                        value={reviewText}
+                                        onChange={(e) => setReviewText(e.target.value)}
+                                        required
+                                    ></textarea>
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={rating === 0}
+                                    className="px-8 py-3 bg-primary text-white font-bold rounded-xl shadow-lg hover:bg-teal-600 transition transform hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                >
+                                    Submit Review
+                                </button>
+                            </form>
+                        </div>
+                    ) : (
+                        user ? (
+                            <div className="bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200 p-4 rounded-xl text-center">
+                                You must purchase this book to leave a review.
+                            </div>
+                        ) : (
+                            <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-center">
+                                <Link to="/login" className="text-primary font-bold hover:underline">Login</Link> to leave a review.
+                            </div>
+                        )
+                    )}
                 </div>
             </div>
 
