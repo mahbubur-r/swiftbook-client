@@ -100,4 +100,34 @@ export const BookDetailsSkeleton = () => {
     );
 };
 
+export const DashboardSkeleton = () => {
+    return (
+        <div className="w-full p-6 bg-gray-50 dark:bg-gray-900 min-h-screen font-display">
+            {/* Header Skeleton */}
+            <Skeleton className="h-10 w-64 mb-8" />
+
+            {/* Stats Cards Skeleton */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+                {[...Array(5)].map((_, i) => (
+                    <div key={i} className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg border-l-4 border-gray-200 dark:border-gray-700 flex items-center gap-4">
+                        <Skeleton className="w-12 h-12 rounded-full" />
+                        <div className="flex-1">
+                            <Skeleton className="h-4 w-24 mb-2" />
+                            <Skeleton className="h-8 w-16" />
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            {/* Chart Skeleton */}
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg mb-8">
+                <Skeleton className="h-8 w-48 mb-6" />
+                <div className="h-96 w-full">
+                    <Skeleton className="w-full h-full rounded-lg" />
+                </div>
+            </div>
+        </div>
+    );
+};
+
 export default Skeleton;

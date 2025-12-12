@@ -14,11 +14,6 @@ const Dashboard = () => {
 
     return (
         <div className="w-full">
-            {/* Debug Info - Remove after fixing */}
-            <div className="text-xs text-gray-500 text-center mb-4">
-                Debug: Role detected as "{role}"
-            </div>
-
             {role === 'admin' && <AdminDashboard />}
             {role === 'librarian' && <LibrarianDashboard />}
             {role === 'user' && <UserDashboard />}

@@ -1,4 +1,5 @@
-# SwiftBook - Book Management & E-commerce Platform
+# SwiftBook 
+## Book Management & Delivery Platform
 
 SwiftBook is a modern, feature-rich web application designed for browsing, managing, and purchasing books. It offers a seamless experience for users to discover books, manage their wishlists, place orders, and leave reviews, while providing powerful tools for librarians and administrators to manage the inventory and users.
 
@@ -58,20 +59,23 @@ src/
 -   **Login / Register**: User authentication pages.
 
 ### Dashboard (Protected)
-The dashboard adapts based on the logged-in user's role:
+The dashboard adapts based on the logged-in user's role, providing a dedicated **Statistical Overview** for each:
 
 #### 👤 User
+-   **Overview**: Visual stats for Orders, Wishlist, Reviews, and Payments with activity charts.
 -   **My Orders**: View purchase history, pay for pending orders, or cancel unpaid ones.
 -   **My Wishlist**: Manage saved books.
 -   **Profile**: Update personal information.
 -   **Invoices**: View billing history.
 
 #### 📚 Librarian
+-   **Overview**: Insights on Books Added, Pending/Paid Orders, and User interactions.
 -   **My Books**: Manage books uploaded by the librarian.
 -   **Add Book**: Upload new books to the system.
 -   **Update Book**: Edit existing book details.
 
 #### 🛡️ Admin
+-   **Overview**: Comprehensive system-wide statistics (Users, Books, Orders, Revenue) with graphical analysis.
 -   **Manage Books**: Full control over the entire book inventory.
 -   **Users Management**: Manage user roles and permissions.
 -   **All Users**: View all registered users.
@@ -99,7 +103,7 @@ The dashboard adapts based on the logged-in user's role:
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-username/swiftbook-client.git
+    git clone https://github.com/mahbubur-r/swiftbook-client.git
     cd swiftbook-client
     ```
 

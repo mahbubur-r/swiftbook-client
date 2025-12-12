@@ -9,6 +9,7 @@ import { FaUserShield } from "react-icons/fa6";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
 import useRole from "../hooks/useRole";
 import useAuth from "../hooks/useAuth";
+import { CgProfile } from "react-icons/cg";
 
 const DashboardLayout = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -82,25 +83,12 @@ const DashboardLayout = () => {
                                     `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
                                 }
                             >
-                                <FaUser className="text-xl" />
+                                <CgProfile className="text-xl" />
                                 <span className="ml-3">Profile</span>
                             </NavLink>
                         </li>
                         {
                             role === 'admin' && <>
-                                {/* Manage Books */}
-                                <li>
-                                    <NavLink
-                                        to="/dashboard/manage-books"
-                                        onClick={() => setIsSidebarOpen(false)}
-                                        className={({ isActive }) =>
-                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                        }
-                                    >
-                                        <LuNotebookPen className="text-xl" />
-                                        <span className="ml-3">Manage Books</span>
-                                    </NavLink>
-                                </li>
                                 {/* All Users */}
                                 <li>
                                     <NavLink
@@ -110,7 +98,7 @@ const DashboardLayout = () => {
                                             `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
                                         }
                                     >
-                                        <FaUserShield className="text-xl" />
+                                        <FaUser className="text-xl" />
                                         <span className="ml-3">All Users</span>
                                     </NavLink>
                                 </li>
@@ -138,6 +126,19 @@ const DashboardLayout = () => {
                                     >
                                         <TbTruckDelivery className="text-xl" />
                                         <span className="ml-3">All Orders</span>
+                                    </NavLink>
+                                </li>
+                                {/* Manage Books */}
+                                <li>
+                                    <NavLink
+                                        to="/dashboard/manage-books"
+                                        onClick={() => setIsSidebarOpen(false)}
+                                        className={({ isActive }) =>
+                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
+                                        }
+                                    >
+                                        <LuNotebookPen className="text-xl" />
+                                        <span className="ml-3">Manage Books</span>
                                     </NavLink>
                                 </li>
                             </>
