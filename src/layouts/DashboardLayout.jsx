@@ -115,19 +115,6 @@ const DashboardLayout = () => {
                                         <span className="ml-3">Users Management</span>
                                     </NavLink>
                                 </li>
-                                {/* All Orders */}
-                                <li>
-                                    <NavLink
-                                        to="/dashboard/all-orders"
-                                        onClick={() => setIsSidebarOpen(false)}
-                                        className={({ isActive }) =>
-                                            `flex items-center p-3 rounded-lg transition-colors ${isActive ? 'bg-primary text-white' : 'text-gray-300 hover:bg-gray-800 hover:text-white'}`
-                                        }
-                                    >
-                                        <TbTruckDelivery className="text-xl" />
-                                        <span className="ml-3">All Orders</span>
-                                    </NavLink>
-                                </li>
                                 {/* Manage Books */}
                                 <li>
                                     <NavLink
@@ -181,7 +168,7 @@ const DashboardLayout = () => {
                                         }
                                     >
                                         <TbTruckDelivery className="text-xl" />
-                                        <span className="ml-3">All Orders</span>
+                                        <span className="ml-3">Orders</span>
                                     </NavLink>
                                 </li>
                             </>
