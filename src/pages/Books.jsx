@@ -2,6 +2,7 @@ import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import BookCard from "../components/BookCard";
 
 const Books = () => {
     const axiosSecure = useAxiosSecure();
@@ -80,25 +81,7 @@ const Books = () => {
             {processedBooks.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {processedBooks.map(book => (
-                        <div key={book._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 dark:border-gray-700 flex flex-col h-full">
-                            <div className="h-64 overflow-hidden relative group">
-                                <img src={book.image} alt={book.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-1 rounded backdrop-blur-sm">
-                                    {book.category}
-                                </div>
-                            </div>
-                            <div className="p-5 flex flex-col flex-grow">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-1" title={book.title}>{book.title}</h3>
-                                <p className="text-gray-600 dark:text-gray-400 text-sm mb-3">by <span className="font-semibold">{book.author}</span></p>
-
-                                <div className="mt-auto flex items-center justify-between">
-                                    <span className="text-xl font-bold text-primary">{book.price}€</span>
-                                    <Link to={`/books/${book._id}`} className="px-4 py-2 bg-gray-900 dark:bg-gray-700 text-white text-sm font-semibold rounded-lg hover:bg-primary transition-colors duration-300">
-                                        Details
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
+                        <BookCard key={book._id} book={book} />
                     ))}
                 </div>
             ) : (

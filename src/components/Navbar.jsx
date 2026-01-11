@@ -95,6 +95,7 @@ const Navbar = () => {
                                             <p className="font-semibold truncate">{user.displayName || 'User'}</p>
                                         </div>
                                         <Link to="/dashboard" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Dashboard</Link>
+                                        <Link to="/dashboard/profile" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">Profile</Link>
                                         <button onClick={handleLogOut} className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">Logout</button>
                                     </div>
                                 </div>
