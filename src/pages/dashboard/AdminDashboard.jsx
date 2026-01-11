@@ -87,7 +87,7 @@ const AdminDashboard = () => {
                 <StatCard icon={<FaBook />} label="Total Books" value={stats.books} color="teal" />
                 <StatCard icon={<FaClipboardList />} label="Total Orders" value={stats.orders} color="purple" />
                 <StatCard icon={<FaHeart />} label="Total Wishlist" value={stats.wishlist} color="pink" />
-                <StatCard icon={<FaMoneyBillWave />} label="Total Payments" value={`$${stats.payments}`} color="green" />
+                <StatCard icon={<FaMoneyBillWave />} label="Total Payments" value={`${stats.payments}`} color="green" />
                 <StatCard icon={<FaStar />} label="Total Reviews" value={stats.reviews} color="yellow" />
             </div>
 

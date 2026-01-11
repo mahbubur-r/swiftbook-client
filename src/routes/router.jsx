@@ -25,6 +25,9 @@ import LibrarianRoute from "./LibrarianRoute";
 import PrivateRoute from "./PrivateRoute";
 import PaymentHistory from "../pages/PaymentHistory";
 import PaymentCancelled from "../pages/PaymentCancelled";
+import About from "../pages/About";
+import Contact from "../pages/Contact";
+import Blog from "../pages/Blog";
 
 const router = createBrowserRouter([
     {
@@ -52,12 +55,23 @@ const router = createBrowserRouter([
                 path: "/register",
                 element: <Register />,
             },
+            {
+                path: "/about",
+                element: <About />,
+            },
+            {
+                path: "/contact",
+                element: <PrivateRoute><Contact /></PrivateRoute>,
+            },
+            {
+                path: "/blog",
+                element: <PrivateRoute><Blog /></PrivateRoute>,
+            },
         ],
     },
     {
         path: "/dashboard",
         element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-        // element: <DashboardLayout></DashboardLayout>,
         children: [
             {
                 path: "/dashboard",
