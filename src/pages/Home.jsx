@@ -16,10 +16,10 @@ const Home = () => {
         <div className="bg-background-light dark:bg-background-dark min-h-screen">
             <Hero />
             <Stats />
-            <LatestBooks />
-            <FeaturedAuthors />
             <HowItWorks />
+            <LatestBooks />
             <PopularCategories />
+            <FeaturedAuthors />
             <FAQ />
             <WhyChooseUs />
             <Testimonials />

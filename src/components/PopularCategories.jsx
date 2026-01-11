@@ -11,7 +11,7 @@ const PopularCategories = () => {
     ];
 
     return (
-        <section className="py-16 bg-gray-50 dark:bg-gray-800 font-display">
+        <section className="py-16 bg-primary/5 py-16 dark:bg-gray-800/50 font-display">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-end mb-12">
                     <div>

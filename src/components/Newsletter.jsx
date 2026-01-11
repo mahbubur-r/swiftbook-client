@@ -13,7 +13,7 @@ const Newsletter = () => {
     };
 
     return (
-        <div className="py-20">
+        <div className="py-20 bg-primary/5 py-16 dark:bg-gray-800/50">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="relative bg-primary rounded-3xl overflow-hidden shadow-2xl">
                     <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>

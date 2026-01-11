@@ -13,9 +13,13 @@ const Books = () => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOption, setSortOption] = useState("default");
+    const [selectedCategory, setSelectedCategory] = useState("All");
 
     // Filter and Sort Logic
     let processedBooks = books || [];
+
+    // Extract Categories
+    const categories = ["All", ...new Set(books?.map(book => book.category).filter(Boolean))];
 
     // 1. Filter by Search Query
     if (searchQuery) {
@@ -24,7 +28,12 @@ const Books = () => {
         );
     }
 
-    // 2. Sort by Price
+    // 2. Filter by Category
+    if (selectedCategory !== "All") {
+        processedBooks = processedBooks.filter(book => book.category === selectedCategory);
+    }
+
+    // 3. Sort by Price
     if (sortOption === "price-asc") {
         processedBooks = [...processedBooks].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
     } else if (sortOption === "price-desc") {
@@ -58,18 +67,33 @@ const Books = () => {
                     )}
                 </div>
 
-                {/* Sort Select */}
-                <div className="w-full md:w-auto flex items-center gap-2">
-                    <label className="text-gray-700 dark:text-gray-300 font-semibold whitespace-nowrap">Sort By:</label>
-                    <select
-                        value={sortOption}
-                        onChange={(e) => setSortOption(e.target.value)}
-                        className="px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition cursor-pointer"
-                    >
-                        <option value="default">Default</option>
-                        <option value="price-asc">Price: Low to High</option>
-                        <option value="price-desc">Price: High to Low</option>
-                    </select>
+                {/* Filters Group */}
+                <div className="flex flex-col md:flex-row gap-4 w-full md:w-auto">
+                    {/* Category Filter */}
+                    <div className="w-full md:w-auto flex items-center gap-2">
+                        <select
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                            className="w-full md:w-[180px] px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition cursor-pointer"
+                        >
+                            {categories.map((category, idx) => (
+                                <option key={idx} value={category}>{category}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {/* Sort Select */}
+                    <div className="w-full md:w-auto flex items-center gap-2">
+                        <select
+                            value={sortOption}
+                            onChange={(e) => setSortOption(e.target.value)}
+                            className="w-full md:w-[180px] px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition cursor-pointer"
+                        >
+                            <option value="default">Sort by: Default</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 

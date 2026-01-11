@@ -5,6 +5,7 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 import GoogleLogo from "../components/GoogleLogo";
 import Logo from "../components/Logo";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useRef } from "react";
 
 const Login = () => {
     const { signIn, googleSignIn } = useContext(AuthContext);
@@ -53,6 +54,15 @@ const Login = () => {
                 setError(error.message);
             })
     }
+    // To take email for email field also need to add ref={emailRef}
+    const emailRef = useRef();
+    const passwordRef = useRef();
+
+    const handleDemoLogin = (e) => {
+        e.preventDefault();
+        if (emailRef.current) emailRef.current.value = "demo@swiftbook.com";
+        if (passwordRef.current) passwordRef.current.value = "Pass@1111";
+    }
 
     return (
         <div className="min-h-screen bg-background-light dark:bg-background-dark flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 font-display">
@@ -78,6 +88,7 @@ const Login = () => {
                                 name="email"
                                 type="email"
                                 autoComplete="email"
+                                ref={emailRef}
                                 required
                                 className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                                 placeholder="Email address"
@@ -90,6 +101,7 @@ const Login = () => {
                                 name="password"
                                 type={showPassword ? "text" : "password"}
                                 autoComplete="current-password"
+                                ref={passwordRef}
                                 required
                                 className="appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-700 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white dark:bg-gray-700 focus:outline-none focus:ring-primary focus:border-primary focus:z-10 sm:text-sm"
                                 placeholder="Password"
@@ -139,6 +151,15 @@ const Login = () => {
                         >
                             <GoogleLogo />
                             <span>Sign in with Google</span>
+                        </button>
+                    </div>
+
+                    <div>
+                        <button
+                            onClick={handleDemoLogin}
+                            className=" mt-4 w-full flex justify-center items-center gap-3 px-4 py-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 transition duration-300"
+                        >
+                            <span className="font-bold tracking-wide">Demo Login</span>
                         </button>
                     </div>
                 </div>

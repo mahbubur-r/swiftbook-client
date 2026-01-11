@@ -25,7 +25,7 @@ const WhyChooseUs = () => {
     ];
 
     return (
-        <section className="py-16 bg-white dark:bg-gray-900 font-display">
+        <section className="py-16 bg-primary/5 py-16 dark:bg-gray-800/50 font-display">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-16">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Why Choose SwiftBook?</h2>
